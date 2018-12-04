@@ -1,0 +1,19 @@
+{
+  "name": "rollun-ts-datastore",
+  "version": "0.1.0",
+  "description": "rollun-datastore written in TS",
+  "main": "index.js",
+  "dependencies": {
+    "rollun-ts-rql": "^0.1.0",
+    "typescript": "^3.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "intern"
+  },
+  "keywords": [
+    "rollun"
+  ],
+  "author": "",
+  "license": "ISC"
+}
