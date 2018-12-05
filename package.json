@@ -7,7 +7,11 @@
     "rollun-ts-rql": "^0.1.0",
     "typescript": "^3.2.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "fetch-mock": "^7.2.5",
+    "intern": "^4.3.3",
+    "node-fetch": "^2.3.0"
+  },
   "scripts": {
     "test": "intern"
   },

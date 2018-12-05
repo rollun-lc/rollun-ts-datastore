@@ -1,11 +1,11 @@
-import {HttpClientInterface} from "./interfaces";
+import {HttpClientInterface} from "../interfaces";
 
-export default class BasicHttpClient implements HttpClientInterface {
+export default class BasicNodeHttpClient implements HttpClientInterface {
     protected url: string;
     protected headers: { [headerName: string]: string };
 
     constructor(url: string, options?: {}) {
-
+        this.url = url;
     }
 
     get(query?: string, options?: {}) {
@@ -19,7 +19,7 @@ export default class BasicHttpClient implements HttpClientInterface {
         return fetch(request)
     }
 
-    post(data?: {},options?: {}) {
+    post(data?: {}, options?: {}) {
         const request = new Request(this.url, {
             method: 'POST',
             headers: {
@@ -30,7 +30,7 @@ export default class BasicHttpClient implements HttpClientInterface {
         return fetch(request);
     }
 
-    put(data?: {},options?: {}, ) {
+    put(data?: {}, options?: {},) {
         const request = new Request(this.url, {
             method: 'PUT',
             headers: {
@@ -41,7 +41,7 @@ export default class BasicHttpClient implements HttpClientInterface {
         return fetch(request);
     }
 
-    delete(query? :string, options?: {}) {
+    delete(query?: string, options?: {}) {
         const request = new Request(`${this.url}/${query}`, {
             method: 'DELETE',
             headers: {
