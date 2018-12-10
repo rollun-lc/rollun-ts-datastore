@@ -12,21 +12,27 @@ export interface ReadInterface {
     count(): Promise<number>
 }
 
-export interface DatastoreInterface extends ReadInterface {
-    create(item: {}): Promise<any>
+export interface DataStoreInterface extends ReadInterface {
+    create(item: {}): Promise<any>,
 
-    update(item: {}): Promise<any>
+    update(item: {}): Promise<any>,
 
-    delete(id: string): Promise<any>
+    delete(id: string): Promise<any>,
+}
 
+export interface HttpRequestOptions {
+    headers?: { [headerName: string]: string },
 }
 
 export interface HttpClientInterface {
-    get(uri?: string, options?: {}): Promise<Response>
+    get(uri?: string, options?: {}): Promise<Response>,
 
-    post(uri?: string, options?: {}): Promise<Response>
+    post(uri?: string, body?: string | {}, options?: HttpRequestOptions): Promise<Response>,
 
-    put(uri?: string, options?: {}): Promise<Response>
+    put(uri?: string, body?: string | {}, options?: HttpRequestOptions): Promise<Response>,
 
-    delete(uri?: string, options?: {}): Promise<Response>
+    delete(uri?: string, options?: HttpRequestOptions): Promise<Response>,
+
+    head(uri?: string, options?: HttpRequestOptions): Promise<Response>,
 }
+

@@ -1,16 +1,16 @@
-import {DatastoreInterface, HttpClientInterface} from "./interfaces";
+import {DataStoreInterface, HttpClientInterface} from "./interfaces";
 import Query from "rollun-ts-rql/src/Query";
-import BasicClient from "./httpClients/BasicClient";
+import BasicClient from "./httpClients/BrowserClient";
 import QueryStringifier from "rollun-ts-rql/src/QueryStringifier"
 
-export interface HttpDatastoreOptions {
+export interface HttpDataStoreOptions {
 }
 
-export default class HttpDatastore implements DatastoreInterface {
+export default class HttpDatastore implements DataStoreInterface {
     readonly identifier = 'id';
     protected client: HttpClientInterface;
 
-    constructor(client?: HttpClientInterface, url?: string, options?: HttpDatastoreOptions) {
+    constructor(client?: HttpClientInterface, url?: string, options?: HttpDataStoreOptions) {
         this.client = client ? client : new BasicClient(url);
     }
 
