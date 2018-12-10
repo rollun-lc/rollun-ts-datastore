@@ -1,0 +1,7 @@
+{
+  "debug": true,
+  "plugins": "node_modules/ts-node/register/index.js",
+  "suites": [
+    "tests/unit/node/HttpDatastoreTest.ts"
+  ]
+}

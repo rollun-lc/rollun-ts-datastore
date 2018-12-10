@@ -1,17 +1,18 @@
 import {DataStoreInterface, HttpClientInterface} from "./interfaces";
 import Query from "rollun-ts-rql/src/Query";
-import BasicClient from "./httpClients/BrowserClient";
+import BrowserClient from "./httpClients/BrowserClient";
 import QueryStringifier from "rollun-ts-rql/src/QueryStringifier"
 
 export interface HttpDataStoreOptions {
+    client?: HttpClientInterface
 }
 
 export default class HttpDatastore implements DataStoreInterface {
     readonly identifier = 'id';
     protected client: HttpClientInterface;
 
-    constructor(client?: HttpClientInterface, url?: string, options?: HttpDataStoreOptions) {
-        this.client = client ? client : new BasicClient(url);
+    constructor(url?: string, options: HttpDataStoreOptions = {}) {
+        this.client = options.client ? options.client : new BrowserClient(url);
     }
 
     read(id: string): Promise<{}> {
@@ -48,7 +49,7 @@ export default class HttpDatastore implements DataStoreInterface {
 
     create(item: {}): Promise<{}> {
         return new Promise((resolve, reject) => {
-            this.client.post('', {payload: item})
+            this.client.post('', item)
                 .then(response => response.json())
                 .then(item => resolve(item))
                 .catch((error) => {
@@ -59,7 +60,7 @@ export default class HttpDatastore implements DataStoreInterface {
 
     update(item: {}): Promise<{}> {
         return new Promise((resolve, reject) => {
-            this.client.put(`/${item[this.identifier]}`, {payload: item})
+            this.client.put(`/${item[this.identifier]}`, item)
                 .then(response => response.json())
                 .then(item => resolve(item))
                 .catch((error) => {
@@ -82,7 +83,7 @@ export default class HttpDatastore implements DataStoreInterface {
     count(): Promise<number> {
         return new Promise((resolve, reject) => {
             this.client.get('?limit(1)')
-                .then(response => this.getItemCount(response))
+                .then(response => resolve(this.getItemCount(response)))
                 .catch((error) => {
                     reject(error)
                 })
@@ -90,7 +91,7 @@ export default class HttpDatastore implements DataStoreInterface {
     }
 
     protected getItemCount(response: Response): number {
-        const responseHeader: string = response.headers['Content-Range'];
+        const responseHeader: string = response.headers.get('Content-Range');
         return parseInt(responseHeader.split('/')[1], 10);
     }
 }

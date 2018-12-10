@@ -1,8 +1,8 @@
 import {HttpRequestOptions} from "../interfaces";
 import AbstractClient from "./AbstractClient";
 
-export default class BasicNodeHttpClient extends AbstractClient {
-    constructor(url: string, options?: { headers?: {} }) {
+export default class BrowserClient extends AbstractClient {
+    constructor(url: string, options: { headers?: {} } = {}) {
         super();
         this.url = url;
         let headers = {
@@ -16,7 +16,7 @@ export default class BasicNodeHttpClient extends AbstractClient {
         this.headers = new Headers(headers);
     }
 
-    get(uri?: string, options?: HttpRequestOptions): Promise<Response> {
+    get(uri?: string, options: HttpRequestOptions = {}): Promise<Response> {
         const fullRequestUrl = uri ? `${this.url}/${uri}` : this.url;
         return fetch(new Request(fullRequestUrl, {
             method: 'GET',
@@ -24,7 +24,7 @@ export default class BasicNodeHttpClient extends AbstractClient {
         }));
     }
 
-    post(uri?: {}, body?: {}, options?: HttpRequestOptions): Promise<Response> {
+    post(uri?: {}, body?: {}, options: HttpRequestOptions = {}): Promise<Response> {
         const fullRequestUrl = uri ? `${this.url}/${uri}` : this.url;
         return fetch(new Request(fullRequestUrl, {
             method: 'POST',
@@ -33,7 +33,7 @@ export default class BasicNodeHttpClient extends AbstractClient {
         }));
     }
 
-    put(uri?: string, body?: {}, options?: HttpRequestOptions): Promise<Response> {
+    put(uri?: string, body?: {}, options: HttpRequestOptions = {}): Promise<Response> {
         const fullRequestUrl = uri ? `${this.url}/${uri}` : this.url;
         return fetch(new Request(fullRequestUrl, {
             method: 'PUT',
@@ -42,7 +42,7 @@ export default class BasicNodeHttpClient extends AbstractClient {
         }));
     }
 
-    delete(uri?: string, options?: HttpRequestOptions): Promise<Response> {
+    delete(uri?: string, options: HttpRequestOptions = {}): Promise<Response> {
         const fullRequestUrl = uri ? `${this.url}/${uri}` : this.url;
         return fetch(new Request(fullRequestUrl, {
             method: 'DELETE',
@@ -50,7 +50,7 @@ export default class BasicNodeHttpClient extends AbstractClient {
         }));
     }
 
-    head(uri?: string, options?: HttpRequestOptions): Promise<Response> {
+    head(uri?: string, options: HttpRequestOptions = {}): Promise<Response> {
         const requestUrl = uri ? `${this.url}/${uri}` : this.url;
         return fetch(new Request(requestUrl, {
             method: 'HEAD',
