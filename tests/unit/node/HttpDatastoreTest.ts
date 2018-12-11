@@ -1,8 +1,8 @@
 import intern from 'intern';
 import HttpDatastore from '../../../src/HttpDatastore';
 import {HttpClientInterface} from "../../../src/interfaces";
-import Limit from 'rollun-ts-rql/src/nodes/Limit';
-import Query from 'rollun-ts-rql/src/Query';
+import Limit from 'rollun-ts-rql/dist/nodes/Limit';
+import Query from 'rollun-ts-rql/dist/Query';
 import {Response} from 'node-fetch';
 
 const {registerSuite} = intern.getPlugin('interface.object');
