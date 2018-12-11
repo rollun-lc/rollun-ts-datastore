@@ -1,6 +1,6 @@
 {
   "name": "rollun-ts-datastore",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "rollun-datastore written in TS",
   "dependencies": {
     "lodash": "^4.17.11",
