@@ -13,7 +13,7 @@ export default class NodeClient extends AbstractClient {
 
         };
         if (options.headers) {
-            headers = {...headers, ...options.headers}
+            headers = Object.assign({}, headers, options.headers)
         }
         this.headers = new Headers(headers);
     }
