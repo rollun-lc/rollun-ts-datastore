@@ -1,6 +1,6 @@
 {
   "name": "rollun-ts-datastore",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "rollun-datastore written in TS",
   "dependencies": {
     "lodash": "^4.17.11",
@@ -22,5 +22,7 @@
   ],
   "author": "",
   "license": "ISC",
-  "files": ["dist/*"]
+  "files": [
+    "dist/*"
+  ]
 }
