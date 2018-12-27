@@ -8,7 +8,8 @@
     "moduleResolution": "node"
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "misc_stuff"
   ],
   "include": [
     "src"
