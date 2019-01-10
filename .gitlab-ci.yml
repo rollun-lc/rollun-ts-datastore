@@ -1,0 +1,44 @@
+image: node:latest
+stages:
+- analyse
+- build
+- test
+- deploy
+
+before_script:
+- npm i
+
+run_tslint:
+  stage: analyse
+  script:
+  - npm run analyse
+
+run_tsc:
+  stage: build
+  script:
+  - npm run build
+
+run_tests:
+  stage: test
+  script:
+  - npm run test
+
+publish:
+  only:
+  - tags
+  stage: deploy
+  script:
+  - apt-get update
+  - apt-get install -y --no-install-recommends expect
+  - git fetch origin
+  - npm --no-git-tag-version version $(git describe --tags --abbrev=0)
+  - |
+      /usr/bin/expect <<EOD
+      spawn npm add-user
+      expect {
+      "Username: " {send "$NPM_USER\r"; exp_continue}
+      "Password: " {send "$NPM_PASS\r"; exp_continue}
+      "Email: (this IS public) " {send "$NPM_EMAIL\r"; exp_continue}
+      }
+      EOD
+  - npm publish

@@ -1,62 +1,62 @@
-import {HttpRequestOptions} from "../interfaces";
-import AbstractClient from "./AbstractClient";
+import { HttpRequestOptions } from '../interfaces';
+import AbstractClient from './AbstractClient';
 
 export default class BrowserClient extends AbstractClient {
-    constructor(url: string, options: { headers?: {} } = {}) {
-        super();
-        this.url = url;
-        let headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
+	constructor(url: string, options: { headers?: {} } = {}) {
+		super();
+		this.url = url;
+		let headers = {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
 
-        };
-        if (options.headers) {
-            headers = Object.assign({}, headers, options.headers)
-        }
-        this.headers = new Headers(headers);
-    }
+		};
+		if (options.headers) {
+			headers = Object.assign({}, headers, options.headers);
+		}
+		this.headers = new Headers(headers);
+	}
 
-    //FIXME: fix slashes when building request url
+	// FIXME: fix slashes when building request url
 
-    get(uri?: string, options: HttpRequestOptions = {}): Promise<Response> {
-        const fullRequestUrl = uri ? `${this.url}${uri}` : this.url;
-        return fetch(new Request(fullRequestUrl, {
-            method: 'GET',
-            headers: this.generateFullHeaders(options.headers),
-        }));
-    }
+	get(uri?: string, options: HttpRequestOptions = {}): Promise<Response> {
+		const fullRequestUrl = uri ? `${this.url}${uri}` : this.url;
+		return fetch(new Request(fullRequestUrl, {
+			method: 'GET',
+			headers: this.generateFullHeaders(options.headers)
+		}));
+	}
 
-    post(uri?: {}, body?: {}, options: HttpRequestOptions = {}): Promise<Response> {
-        const fullRequestUrl = uri ? `${this.url}${uri}` : this.url;
-        return fetch(new Request(fullRequestUrl, {
-            method: 'POST',
-            headers: this.generateFullHeaders(options.headers),
-            body: this.generateRequestBodyString(body),
-        }));
-    }
+	post(uri?: {}, body?: {}, options: HttpRequestOptions = {}): Promise<Response> {
+		const fullRequestUrl = uri ? `${this.url}${uri}` : this.url;
+		return fetch(new Request(fullRequestUrl, {
+			method: 'POST',
+			headers: this.generateFullHeaders(options.headers),
+			body: this.generateRequestBodyString(body)
+		}));
+	}
 
-    put(uri?: string, body?: {}, options: HttpRequestOptions = {}): Promise<Response> {
-        const fullRequestUrl = uri ? `${this.url}${uri}` : this.url;
-        return fetch(new Request(fullRequestUrl, {
-            method: 'PUT',
-            headers: this.generateFullHeaders(options.headers),
-            body: this.generateRequestBodyString(body),
-        }));
-    }
+	put(uri?: string, body?: {}, options: HttpRequestOptions = {}): Promise<Response> {
+		const fullRequestUrl = uri ? `${this.url}${uri}` : this.url;
+		return fetch(new Request(fullRequestUrl, {
+			method: 'PUT',
+			headers: this.generateFullHeaders(options.headers),
+			body: this.generateRequestBodyString(body)
+		}));
+	}
 
-    delete(uri?: string, options: HttpRequestOptions = {}): Promise<Response> {
-        const fullRequestUrl = uri ? `${this.url}${uri}` : this.url;
-        return fetch(new Request(fullRequestUrl, {
-            method: 'DELETE',
-            headers: this.generateFullHeaders(options.headers)
-        }));
-    }
+	delete(uri?: string, options: HttpRequestOptions = {}): Promise<Response> {
+		const fullRequestUrl = uri ? `${this.url}${uri}` : this.url;
+		return fetch(new Request(fullRequestUrl, {
+			method: 'DELETE',
+			headers: this.generateFullHeaders(options.headers)
+		}));
+	}
 
-    head(uri?: string, options: HttpRequestOptions = {}): Promise<Response> {
-        const requestUrl = uri ? `${this.url}${uri}` : this.url;
-        return fetch(new Request(requestUrl, {
-            method: 'HEAD',
-            headers: this.generateFullHeaders(options.headers)
-        }));
-    }
+	head(uri?: string, options: HttpRequestOptions = {}): Promise<Response> {
+		const requestUrl = uri ? `${this.url}${uri}` : this.url;
+		return fetch(new Request(requestUrl, {
+			method: 'HEAD',
+			headers: this.generateFullHeaders(options.headers)
+		}));
+	}
 }
