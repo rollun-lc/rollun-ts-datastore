@@ -82,8 +82,12 @@ export default class HttpDatastore implements DataStoreInterface {
 
 	count(): Promise<number> {
 		return new Promise((resolve, reject) => {
-			this.client.get('?limit(1)')
-				.then(response => resolve(this.getItemCount(response)))
+			this.client.get('?limit(1)', {
+					headers: {
+						'With-Content-Range': '*'
+					}
+				}
+			).then(response => resolve(this.getItemCount(response)))
 				.catch((error) => {
 					reject(error);
 				});
