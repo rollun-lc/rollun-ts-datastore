@@ -1,6 +1,5 @@
 import { HttpRequestOptions } from '../interfaces';
 import AbstractClient from './AbstractClient';
-import fetch, { Headers, Request, Response } from 'node-fetch';
 
 export default class BrowserClient extends AbstractClient {
 	constructor(url: string, options: { headers?: {} } = {}) {
