@@ -23,7 +23,7 @@ export default class BrowserClient extends AbstractClient {
 		return fetch(new Request(fullRequestUrl, {
 			method: 'GET',
 			headers: this.generateFullHeaders(options.headers)
-		}));
+		})).then(this.catchHTTPResponseError());
 	}
 
 	post(uri?: {}, body?: {}, options: HttpRequestOptions = {}): Promise<Response> {
@@ -32,7 +32,7 @@ export default class BrowserClient extends AbstractClient {
 			method: 'POST',
 			headers: this.generateFullHeaders(options.headers),
 			body: this.generateRequestBodyString(body)
-		}));
+		})).then(this.catchHTTPResponseError());
 	}
 
 	put(uri?: string, body?: {}, options: HttpRequestOptions = {}): Promise<Response> {
@@ -41,7 +41,7 @@ export default class BrowserClient extends AbstractClient {
 			method: 'PUT',
 			headers: this.generateFullHeaders(options.headers),
 			body: this.generateRequestBodyString(body)
-		}));
+		})).then(this.catchHTTPResponseError());
 	}
 
 	delete(uri?: string, options: HttpRequestOptions = {}): Promise<Response> {
@@ -49,7 +49,7 @@ export default class BrowserClient extends AbstractClient {
 		return fetch(new Request(fullRequestUrl, {
 			method: 'DELETE',
 			headers: this.generateFullHeaders(options.headers)
-		}));
+		})).then(this.catchHTTPResponseError());
 	}
 
 	head(uri?: string, options: HttpRequestOptions = {}): Promise<Response> {
@@ -57,6 +57,6 @@ export default class BrowserClient extends AbstractClient {
 		return fetch(new Request(requestUrl, {
 			method: 'HEAD',
 			headers: this.generateFullHeaders(options.headers)
-		}));
+		})).then(this.catchHTTPResponseError());
 	}
 }
