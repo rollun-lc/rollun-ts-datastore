@@ -38,4 +38,14 @@ export default abstract class AbstractClient implements HttpClientInterface {
 		}
 		return result;
 	}
+
+	protected catchHTTPResponseError() {
+		return res => new Promise(
+			(resolve, reject) => {
+						res.ok
+							? resolve(res)
+							: reject(res);
+			}
+		);
+	}
 }
