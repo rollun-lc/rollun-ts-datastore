@@ -7,19 +7,25 @@
     "rollun-ts-rql": "^0.2.3"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.2",
+    "@types/mocha": "^5.2.7",
+    "@types/nock": "^10.0.3",
+    "@types/node": "~9.6.5",
+    "chai": "^4.2.0",
     "fetch-mock": "^7.2.5",
     "intern": "^4.3.3",
+    "mocha": "^6.2.0",
+    "nock": "^11.3.3",
     "node-fetch": "^2.3.0",
     "source-map": "^0.7.3",
     "ts-node": "^7.0.1",
-    "@types/node": "~9.6.5",
     "tslint": "^5.12.0",
     "typescript": "^2.6.2"
   },
   "scripts": {
     "analyse": "node_modules/.bin/tslint --project tslint.json",
     "build": "node_modules/.bin/tsc",
-    "test": "node_modules/.bin/intern"
+    "test": "node_modules/.bin/mocha -r ts-node/register tests/unit/*"
   },
   "keywords": [
     "rollun"
