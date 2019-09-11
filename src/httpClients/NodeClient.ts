@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const {Headers, Request} = require('node-fetch');
+const {Headers, Request, Response} = require('node-fetch');
 import { HttpRequestOptions } from '../interfaces';
 import AbstractClient from './AbstractClient';
 
