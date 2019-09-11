@@ -1,13 +1,16 @@
-import intern from 'intern';
-import HttpDatastore from '../../../src/HttpDatastore';
-import { HttpClientInterface } from '../../../src/interfaces';
-import Limit from 'rollun-ts-rql/dist/nodes/Limit';
-import Query from 'rollun-ts-rql/dist/Query';
-import { Response } from 'node-fetch';
+import BrowserClient           from '../../src/httpClients/BrowserClient';
+import { assert }              from 'chai';
+import { HttpClientInterface } from '../../src/interfaces';
+import HttpDatastore           from '../../src/HttpDatastore';
+import { Response }            from 'node-fetch';
+import Limit                   from 'rollun-ts-rql/dist/nodes/Limit';
+import Query                   from 'rollun-ts-rql/dist/Query';
 
-const {registerSuite} = intern.getPlugin('interface.object');
-const {assert} = intern.getPlugin('chai');
 const _ = require('lodash');
+const nock = require('nock');
+
+const client = new BrowserClient('https://test.datastore');
+const url = 'https://test.datastore';
 
 const testClient: HttpClientInterface = {
 	get(uri?: string, options: {} = {}): Promise<Response> {
@@ -98,8 +101,8 @@ const testClient: HttpClientInterface = {
 
 const datastore = new HttpDatastore('', {client: testClient});
 
-registerSuite('HTTP Datastore Test', {
-	'test "create"'() {
+describe('Test HttpDatastore', () => {
+	it('create', () => {
 		return new Promise((resolve, reject) => {
 			try {
 				datastore.create({id: '1233'}).then((item) => {
@@ -110,21 +113,20 @@ registerSuite('HTTP Datastore Test', {
 				reject(error);
 			}
 		});
-	},
-	'test "read"'() {
+	});
+	it('read', () => {
 		return new Promise((resolve, reject) => {
 			try {
 				datastore.read('1233').then((item) => {
 					assert.isTrue(_.isEqual(item, {id: '1233'}), '"read" works correctly');
 					resolve();
 				});
-			}
-			catch (error) {
+			} catch (error) {
 				reject(error);
 			}
 		});
-	},
-	'test "update"'() {
+	});
+	it('update', () => {
 		return new Promise((resolve, reject) => {
 			try {
 				datastore.update({
@@ -147,10 +149,9 @@ registerSuite('HTTP Datastore Test', {
 			} catch (error) {
 				reject(error);
 			}
-
 		});
-	},
-	'test "delete"'() {
+	});
+	it('delete', () => {
 		return new Promise((resolve, reject) => {
 			try {
 				datastore.delete('1233').then((item) => {
@@ -167,8 +168,8 @@ registerSuite('HTTP Datastore Test', {
 				reject(error);
 			}
 		});
-	},
-	'test "query"'() {
+	});
+	it('query', () => {
 		return new Promise((resolve, reject) => {
 			try {
 				datastore.query(new Query({limit: new Limit(10, 0)})).then(
@@ -185,8 +186,8 @@ registerSuite('HTTP Datastore Test', {
 				reject(error);
 			}
 		});
-	},
-	'test "count"'() {
+	});
+	it('count', () => {
 		return new Promise((resolve, reject) => {
 			try {
 				datastore.count().then((count) => {
@@ -197,5 +198,5 @@ registerSuite('HTTP Datastore Test', {
 				reject(error);
 			}
 		});
-	}
+	});
 });
