@@ -2,7 +2,7 @@ image: node:latest
 stages:
 - analyse
 - build
-- test
+#- test
 - deploy
 
 before_script:

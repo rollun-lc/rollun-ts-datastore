@@ -1,14 +1,13 @@
 import { HttpRequestOptions } from '../interfaces';
 import AbstractClient from './AbstractClient';
 
-export default class BrowserClient extends AbstractClient {
+export default class BrowserClient<T> extends AbstractClient<T> {
 	constructor(url: string, options: { headers?: {} } = {}) {
 		super();
 		this.url = url;
 		let headers = {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
-
 		};
 		if (options.headers) {
 			headers = Object.assign({}, headers, options.headers);
@@ -26,7 +25,7 @@ export default class BrowserClient extends AbstractClient {
 		})).then(this.catchHTTPResponseError);
 	}
 
-	post(uri?: {}, body?: {}, options: HttpRequestOptions = {}): Promise<Response> {
+	post(uri?: {}, body?: T, options: HttpRequestOptions = {}): Promise<Response> {
 		const fullRequestUrl = uri ? `${this.url}${uri}` : this.url;
 		return fetch(new Request(fullRequestUrl, {
 			method: 'POST',
@@ -35,7 +34,7 @@ export default class BrowserClient extends AbstractClient {
 		})).then(this.catchHTTPResponseError);
 	}
 
-	put(uri?: string, body?: {}, options: HttpRequestOptions = {}): Promise<Response> {
+	put(uri?: string, body?: T, options: HttpRequestOptions = {}): Promise<Response> {
 		const fullRequestUrl = uri ? `${this.url}${uri}` : this.url;
 		return fetch(new Request(fullRequestUrl, {
 			method: 'PUT',
