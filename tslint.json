@@ -1,7 +1,12 @@
 {
+	"linterOptions": {
+		"exclude": [
+			"./node_modules",
+			"**/tests/**"
+		]
+	},
 	"rules": {
 		"align": false,
-		"ban": [],
 		"class-name": true,
 		"comment-format": [ true, "check-space" ],
 		"curly": true,

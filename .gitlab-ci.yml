@@ -18,10 +18,10 @@ run_tsc:
   script:
   - npm run build
 
-run_tests:
-  stage: test
-  script:
-  - npm test
+#run_tests:
+#  stage: test
+#  script:
+#  - npm test
 
 publish:
   only:
