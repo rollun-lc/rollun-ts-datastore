@@ -31,7 +31,8 @@ export default class HttpDatastore<T = {}> implements DataStoreInterface<T> {
 	has(id: string): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			this.client.get(`/${id}`)
-				.then(response => response.ok ? resolve(true) : resolve(false))
+				.then(response => response.json())
+				.then(response => response ? resolve(true) : resolve(false))
 				.catch((error) => {
 					reject(error);
 				});
