@@ -4,7 +4,7 @@
   "description": "rollun-datastore written in TS",
   "dependencies": {
     "lodash": "^4.17.11",
-    "rollun-ts-rql": "^0.2.3"
+    "rollun-ts-rql": "^0.6.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.2",
@@ -18,12 +18,12 @@
     "nock": "^11.3.3",
     "node-fetch": "^2.3.0",
     "source-map": "^0.7.3",
-    "ts-node": "^7.0.1",
+    "ts-node": "^8.0.1",
     "tslint": "^5.12.0",
-    "typescript": "^2.6.2"
+    "typescript": "^3.6.2"
   },
   "scripts": {
-    "analyse": "node_modules/.bin/tslint --project tslint.json",
+    "analyse": "node_modules/.bin/tslint --project tslint.json -e **/tests/**",
     "build": "node_modules/.bin/tsc",
     "test": "node_modules/.bin/mocha -r ts-node/register tests/unit/*"
   },
