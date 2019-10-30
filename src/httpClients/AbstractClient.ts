@@ -1,6 +1,6 @@
 import { HttpClientInterface } from '../interfaces';
 
-export default abstract class AbstractClient implements HttpClientInterface {
+export default abstract class AbstractClient<T = {}> implements HttpClientInterface<T> {
 	protected url: string;
 	protected headers: Headers;
 
@@ -25,7 +25,7 @@ export default abstract class AbstractClient implements HttpClientInterface {
 		return fullRequestHeaders;
 	}
 
-	protected generateRequestBodyString(body: {} | string): string {
+	protected generateRequestBodyString(body: T | string): string {
 		let result;
 		if (body) {
 			if (typeof body === 'string') {

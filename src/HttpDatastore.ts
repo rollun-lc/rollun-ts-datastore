@@ -5,17 +5,19 @@ import QueryStringifier from 'rollun-ts-rql/dist/QueryStringifier';
 
 export interface HttpDataStoreOptions {
 	client?: HttpClientInterface;
+	idField?: string;
 }
 
-export default class HttpDatastore implements DataStoreInterface {
-	readonly identifier = 'id';
+export default class HttpDatastore<T = {}> implements DataStoreInterface<T> {
+	readonly identifier;
 	protected client: HttpClientInterface;
 
 	constructor(url?: string, options: HttpDataStoreOptions = {}) {
-		this.client = options.client ? options.client : new BrowserClient(url);
+		this.identifier = options.idField || 'id';
+		this.client = options.client || new BrowserClient<T>(url);
 	}
 
-	read(id: string): Promise<{}> {
+	read(id: string): Promise<T> {
 		return new Promise((resolve, reject) => {
 			this.client.get(`/${id}`)
 				.then(response => response.json())
@@ -36,7 +38,7 @@ export default class HttpDatastore implements DataStoreInterface {
 		});
 	}
 
-	query(query: Query): Promise<{}[]> {
+	query<U = T>(query: Query): Promise<Array<U>> {
 		return new Promise((resolve, reject) => {
 			this.client.get(`?${QueryStringifier.stringify(query)}`)
 				.then(response => response.json())
@@ -47,7 +49,7 @@ export default class HttpDatastore implements DataStoreInterface {
 		});
 	}
 
-	create(item: {}): Promise<{}> {
+	create(item: T): Promise<T> {
 		return new Promise((resolve, reject) => {
 			this.client.post('', item)
 				.then(response => response.json())
@@ -58,7 +60,7 @@ export default class HttpDatastore implements DataStoreInterface {
 		});
 	}
 
-	update(item: {}): Promise<{}> {
+	update(item: T): Promise<T> {
 		return new Promise((resolve, reject) => {
 			this.client.put(`/${item[this.identifier]}`, item)
 				.then(response => response.json())
@@ -69,7 +71,7 @@ export default class HttpDatastore implements DataStoreInterface {
 		});
 	}
 
-	delete(id: string): Promise<{}> {
+	delete(id: string): Promise<T> {
 		return new Promise((resolve, reject) => {
 			this.client.delete(`/${id}`)
 				.then(response => response.json())
