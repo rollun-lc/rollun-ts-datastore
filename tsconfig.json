@@ -7,8 +7,10 @@
     "moduleResolution": "node"
   },
   "exclude": [
-    "node_modules",
-    "misc_stuff"
+    "./node_modules/*",
+    "./node_modules/@types/**",
+    "dist/*",
+    "misc_stuff/*"
   ],
   "include": [
     "src"
