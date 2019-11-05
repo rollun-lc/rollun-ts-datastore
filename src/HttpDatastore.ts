@@ -39,7 +39,7 @@ export default class HttpDatastore<T = {}> implements DataStoreInterface<T> {
 		});
 	}
 
-	query<U = T>(query: Query): Promise<Array<U>> {
+	query<U = T>(query = new Query({})): Promise<Array<U>> {
 		return new Promise((resolve, reject) => {
 			this.client.get(`?${QueryStringifier.stringify(query)}`)
 				.then(response => response.json())
@@ -61,7 +61,7 @@ export default class HttpDatastore<T = {}> implements DataStoreInterface<T> {
 		});
 	}
 
-	update(item: T): Promise<T> {
+	update<S = T>(item: S): Promise<S> {
 		return new Promise((resolve, reject) => {
 			this.client.put(`/${item[this.identifier]}`, item)
 				.then(response => response.json())
