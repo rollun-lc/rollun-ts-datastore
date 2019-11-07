@@ -8,7 +8,7 @@ export interface HttpDataStoreOptions {
 	idField?: string;
 }
 
-export default class HttpDatastore<T = {}> implements DataStoreInterface<T> {
+export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 	readonly identifier;
 	protected client: HttpClientInterface;
 
@@ -61,7 +61,7 @@ export default class HttpDatastore<T = {}> implements DataStoreInterface<T> {
 		});
 	}
 
-	update<S = T>(item: S): Promise<S> {
+	update<S = T>(item: S): Promise<T> {
 		return new Promise((resolve, reject) => {
 			this.client.put(`/${item[this.identifier]}`, item)
 				.then(response => response.json())
