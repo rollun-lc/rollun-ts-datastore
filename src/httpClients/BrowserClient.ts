@@ -1,8 +1,8 @@
-import { HttpRequestOptions } from '../interfaces';
-import AbstractClient from './AbstractClient';
+import { HttpRequestOptions }          from '../interfaces';
+import AbstractClient                  from './AbstractClient';
 
 export default class BrowserClient<T> extends AbstractClient<T> {
-	constructor(url: string, options: { headers?: {} } = {}) {
+	constructor(url: string, options: {headers?: {}} = {}) {
 		super();
 		this.url = url;
 		let headers = {
