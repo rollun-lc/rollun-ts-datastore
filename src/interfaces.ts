@@ -7,7 +7,7 @@ export interface ReadInterface<T = {}> {
 
 	has(id: string): Promise<boolean>;
 
-	query(query: Query): Promise<Array<T>>;
+	query(query?: Query): Promise<Array<T>>;
 
 	count(): Promise<number>;
 }
