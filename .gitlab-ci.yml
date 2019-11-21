@@ -1,8 +1,7 @@
 image: node:latest
 stages:
 - analyse
-- build
-#- test
+- test
 - deploy
 
 before_script:
@@ -13,15 +12,10 @@ run_tslint:
   script:
   - npm run analyse
 
-run_tsc:
-  stage: build
+run_tests:
+  stage: test
   script:
-  - npm run build
-
-#run_tests:
-#  stage: test
-#  script:
-#  - npm test
+  - npm test
 
 publish:
   only:

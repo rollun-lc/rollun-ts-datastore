@@ -4,13 +4,16 @@
     "sourceMap": true,
     "declaration": true,
     "outDir": "dist",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "lib": [ "es2015", "dom" ],
+    "esModuleInterop": true
   },
   "exclude": [
     "./node_modules/*",
     "./node_modules/@types/**",
     "dist/*",
-    "misc_stuff/*"
+    "misc_stuff/*",
+    "__tests__"
   ],
   "include": [
     "src"
