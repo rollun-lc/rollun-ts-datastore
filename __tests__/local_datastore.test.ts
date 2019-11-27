@@ -1,16 +1,18 @@
 import LocalDatastore from "../src/LocalDatastore";
 
-import Query  from 'rollun-ts-rql/dist/Query';
-import Limit  from 'rollun-ts-rql/dist/nodes/Limit';
-import Select from 'rollun-ts-rql/dist/nodes/Select';
-import Sort   from 'rollun-ts-rql/dist/nodes/Sort';
-import And    from 'rollun-ts-rql/dist/nodes/logicalNodes/And';
-import Or     from 'rollun-ts-rql/dist/nodes/logicalNodes/Or';
-import Eq     from 'rollun-ts-rql/dist/nodes/scalarNodes/Eq';
-import Ge     from 'rollun-ts-rql/dist/nodes/scalarNodes/Ge';
-import Le     from 'rollun-ts-rql/dist/nodes/scalarNodes/Le';
-import In     from 'rollun-ts-rql/dist/nodes/arrayNodes/In';
-import Out    from 'rollun-ts-rql/dist/nodes/arrayNodes/Out';
+import Query                 from 'rollun-ts-rql/dist/Query';
+import Limit                 from 'rollun-ts-rql/dist/nodes/Limit';
+import Select                from 'rollun-ts-rql/dist/nodes/Select';
+import Sort                  from 'rollun-ts-rql/dist/nodes/Sort';
+import GroupBy               from 'rollun-ts-rql/dist/nodes/GroupBy';
+import And                   from 'rollun-ts-rql/dist/nodes/logicalNodes/And';
+import Or                    from 'rollun-ts-rql/dist/nodes/logicalNodes/Or';
+import Eq                    from 'rollun-ts-rql/dist/nodes/scalarNodes/Eq';
+import Ge                    from 'rollun-ts-rql/dist/nodes/scalarNodes/Ge';
+import Le                    from 'rollun-ts-rql/dist/nodes/scalarNodes/Le';
+import In                    from 'rollun-ts-rql/dist/nodes/arrayNodes/In';
+import Out                   from 'rollun-ts-rql/dist/nodes/arrayNodes/Out';
+import AggregateFunctionNode from 'rollun-ts-rql/dist/nodes/aggregateNodes/AggregateFunctionNode'
 
 const initialData = [
 	{id: 1, text: '1123'},
@@ -308,6 +310,38 @@ describe('Local data store basic tests', () => {
 				}))
 					.then(res => {
 						expect(res).toStrictEqual(expectedData);
+						done();
+					})
+			});
+		});
+		const initialData1 = [
+			{id: 1, text: '111', text1: '777'},
+			{id: 2, text: '111', text1: '777'},
+			{id: 3, text: '111', text1: '888'},
+			{id: 4, text: '411', text1: '999'},
+		];
+		const ds1 = new LocalDatastore({initialData: initialData1});
+		describe('GroupBy node', () => {
+			test('existed fields', done => {
+				const expectedData = [{id: 1, text: '111', text1: '777'},
+					{id: 3, text: '111', text1: '888'},
+					{id: 4, text: '411', text1: '999'}];
+				ds1
+					.query(new Query({
+						group: new GroupBy(['text', 'text1'])
+					}))
+					.then(res => {
+						expect(res).toStrictEqual(expectedData);
+						done();
+					})
+			});
+			test('not existed fields', done => {
+				ds1
+					.query(new Query({
+						group: new GroupBy(['not_existed_field'])
+					}))
+					.catch(res => {
+						expect(res).toBeTruthy();
 						done();
 					})
 			});

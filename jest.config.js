@@ -3,6 +3,7 @@ module.exports = {
         "<rootDir>"
     ],
     testMatch: [
+        // "**/__tests_/**/test.ts"
         "**/__tests__/**/*.+(ts|tsx|js)",
         // "**/?(*.)+(spec|test).+(ts|tsx|js)"
     ],

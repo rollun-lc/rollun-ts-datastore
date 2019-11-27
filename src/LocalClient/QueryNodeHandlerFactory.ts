@@ -5,19 +5,20 @@ import AbstractLogicalNode from 'rollun-ts-rql/dist/nodes/logicalNodes/AbstractL
 import AbstractScalarNode  from 'rollun-ts-rql/dist/nodes/scalarNodes/AbstractScalarNode';
 import AbstractArrayNode   from 'rollun-ts-rql/dist/nodes/arrayNodes/AbstractArrayNode';
 
-import And      from 'rollun-ts-rql/dist/nodes/logicalNodes/And';
-import Or       from 'rollun-ts-rql/dist/nodes/logicalNodes/Or';
-import Eq       from 'rollun-ts-rql/dist/nodes/scalarNodes/Eq';
-import Ne       from 'rollun-ts-rql/dist/nodes/scalarNodes/Ne';
-import Le       from 'rollun-ts-rql/dist/nodes/scalarNodes/Le';
-import Lt       from 'rollun-ts-rql/dist/nodes/scalarNodes/Lt';
-import Ge       from 'rollun-ts-rql/dist/nodes/scalarNodes/Ge';
-import Gt       from 'rollun-ts-rql/dist/nodes/scalarNodes/Gt';
-import Contains from 'rollun-ts-rql/dist/nodes/scalarNodes/Contains';
-import Like     from 'rollun-ts-rql/dist/nodes/scalarNodes/Like';
-import ALike    from 'rollun-ts-rql/dist/nodes/scalarNodes/Alike';
-import In     from 'rollun-ts-rql/dist/nodes/arrayNodes/In';
-import Out     from 'rollun-ts-rql/dist/nodes/arrayNodes/Out';
+import And                   from 'rollun-ts-rql/dist/nodes/logicalNodes/And';
+import Or                    from 'rollun-ts-rql/dist/nodes/logicalNodes/Or';
+import Eq                    from 'rollun-ts-rql/dist/nodes/scalarNodes/Eq';
+import Ne                    from 'rollun-ts-rql/dist/nodes/scalarNodes/Ne';
+import Le                    from 'rollun-ts-rql/dist/nodes/scalarNodes/Le';
+import Lt                    from 'rollun-ts-rql/dist/nodes/scalarNodes/Lt';
+import Ge                    from 'rollun-ts-rql/dist/nodes/scalarNodes/Ge';
+import Gt                    from 'rollun-ts-rql/dist/nodes/scalarNodes/Gt';
+import Contains              from 'rollun-ts-rql/dist/nodes/scalarNodes/Contains';
+import Like                  from 'rollun-ts-rql/dist/nodes/scalarNodes/Like';
+import ALike                 from 'rollun-ts-rql/dist/nodes/scalarNodes/Alike';
+import In                    from 'rollun-ts-rql/dist/nodes/arrayNodes/In';
+import Out                   from 'rollun-ts-rql/dist/nodes/arrayNodes/Out';
+import AggregateFunctionNode from 'rollun-ts-rql/dist/nodes/aggregateNodes/AggregateFunctionNode';
 
 export const logicalNodesHandlersFactory = (node: AbstractLogicalNode) => {
 	if (node instanceof And) {
@@ -44,7 +45,7 @@ export const logicalNodesHandlersFactory = (node: AbstractLogicalNode) => {
 		};
 	} else {
 		// Stub for Not node
-		return (handlers: Array<(item) => boolean>) => (item) => true;
+		return () => () => true;
 	}
 };
 
@@ -79,6 +80,8 @@ export const queryNodeHandlerFactory = (node: AbstractQueryNode) => {
 			const handler = nodesMap[node.constructor.name];
 			return handler ? handler(item[node.field], node.values) : true;
 		};
+	} else if (node instanceof AggregateFunctionNode) {
+		console.log('f node', node);
 	}
 	return () => true;
 };
