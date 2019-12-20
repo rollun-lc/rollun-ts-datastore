@@ -2,6 +2,7 @@ import Query                     from 'rollun-ts-rql/dist/Query';
 import Limit                     from 'rollun-ts-rql/dist/nodes/Limit';
 import Select                    from 'rollun-ts-rql/dist/nodes/Select';
 import Sort                      from 'rollun-ts-rql/dist/nodes/Sort';
+import GroupBy                   from 'rollun-ts-rql/dist/nodes/GroupBy';
 import AbstractQueryNode         from 'rollun-ts-rql/dist/nodes/AbstractQueryNode';
 import AbstractLogicalNode       from 'rollun-ts-rql/dist/nodes/logicalNodes/AbstractLogicalNode';
 import AggregateFunctionNode     from 'rollun-ts-rql/dist/nodes/aggregateNodes/AggregateFunctionNode';
@@ -54,9 +55,9 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 		}
 		return _.compose(
 			this._getLimitHandler(query.limitNode),
-			this._getSelectHandler(query.selectNode),
 			this._getSortHandler(query.sortNode),
-
+			this._getSelectAndGroupByHandler(query.selectNode),
+			this._getGroupByHandler(query.groupNode),
 			this._getQueryHandler(query.queryNode)
 		)(this.data) as unknown as Array<U>;
 	}
@@ -94,7 +95,9 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 	}
 
 	private _getSortHandler(node?: Sort) {
-		if (!node) { return (data: Array<T>) => data; }
+		if (!node) {
+			return (data: Array<T>) => data;
+		}
 		return (data: Array<T>) => data.sort((a, b) => {
 			const sortOptions = Object.entries(node!.sortOptions);
 			for (const sortOption of sortOptions) {
@@ -113,12 +116,16 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 	}
 
 	private _getLimitHandler(node?: Limit) {
-		if (!node) { return (data: Array<T>) => data; }
+		if (!node) {
+			return (data: Array<T>) => data;
+		}
 		return (data: Array<T>) => data.slice(node.offset, node.offset + node.limit);
 	}
 
-	private _getSelectHandler(node?: Select) {
-		if (!node) { return (data: Array<T>) => data; }
+	private _getSelectAndGroupByHandler(node?: Select) {
+		if (!node) {
+			return (data: Array<T>) => data;
+		}
 		return (data: Array<T>) => data.map(el => {
 			let newItem: {[key: string]: any} = {};
 			node.fields.forEach(field => {
@@ -148,12 +155,35 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 		}
 	}
 
+	private _getGroupByHandler(node?: GroupBy) {
+		if (!node) {
+			return (data: Array<T>) => data;
+		}
+		const checkIfElementExists = (array: Array<T>, el: T) => {
+			for (const field of node.fields) {
+				if (!el.hasOwnProperty(field)) {
+					throw new Error(`Field ${field} does not exist in list`);
+				}
+				if (!array.find(e => e[field] === el[field])) {
+					return false;
+				}
+			}
+			return true;
+		};
+		const reducer = (acc: Array<T>, el: T) => {
+			return checkIfElementExists(acc, el)
+				? acc
+				: acc.concat(el);
+		};
+		return (data: Array<T>) => data.reduce(reducer, []);
+	}
+
 	private _getQueryHandler(node?: AbstractQueryNode) {
-		// console.log('query', node);
-		if (!node) { return (data: Array<T>) => data; }
-		// console.log(node);
+		// for now, ignore query, if there is at least one aggregate node
+		if (!node) {
+			return (data: Array<T>) => data;
+		}
 		const handler = this._getItemHandlerRecursively(node);
-		// console.log(handler);
 		return (data: Array<T>) => data.filter(handler);
 	}
 }

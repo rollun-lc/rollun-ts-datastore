@@ -10,10 +10,6 @@ const _ = require('lodash');
 
 (global as any).Headers = Headers;
 
-test('test_1', () => {
-	expect(true).toBe(true);
-});
-
 const testClient: HttpClientInterface = {
 	get(uri?: string, options: {} = {}): Promise<Response> {
 		switch (uri) {

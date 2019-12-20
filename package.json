@@ -27,7 +27,7 @@
     "typescript": "^3.6.2"
   },
   "scripts": {
-    "analyse": "node_modules/.bin/tslint --project tslint.json -e **/tests/**",
+    "analyse": "node_modules/.bin/tslint --project tslint.json -e **/__tests__/**",
     "build": "tsc && babel src  --ignore node_modules --out-dir dist --extensions '.ts'",
     "run-tests": "jest",
     "test": "npm run build && npm run run-tests"
