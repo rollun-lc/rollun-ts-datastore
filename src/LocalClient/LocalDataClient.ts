@@ -123,7 +123,9 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 	}
 
 	private _getSelectAndGroupByHandler(node?: Select) {
-		if (!node) {return (data: Array<T>) => data;}
+		if (!node) {
+			return (data: Array<T>) => data;
+		}
 		return (data: Array<T>) => data.map(el => {
 			let newItem: {[key: string]: any} = {};
 			node.fields.forEach(field => {
@@ -163,7 +165,7 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 					throw new Error(`Field ${field} does not exist in list`);
 				}
 				if (!array.find(e => e[field] === el[field])) {
-					return false
+					return false;
 				}
 			}
 			return true;
@@ -178,7 +180,9 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 
 	private _getQueryHandler(node?: AbstractQueryNode) {
 		// for now, ignore query, if there is at least one aggregate node
-		if (!node) {return (data: Array<T>) => data;}
+		if (!node) {
+			return (data: Array<T>) => data;
+		}
 		const handler = this._getItemHandlerRecursively(node);
 		return (data: Array<T>) => data.filter(handler);
 	}
