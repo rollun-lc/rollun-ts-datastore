@@ -11,10 +11,10 @@ const _ = require('lodash');
 (global as any).Headers = Headers;
 
 const testClient: HttpClientInterface = {
-	get(uri?: string, options: {} = {}): Promise<Response> {
+	get(uri?: string): Promise<Response> {
 		switch (uri) {
 			case '/1233':
-				return new Promise((resolve, reject) => {
+				return new Promise(resolve => {
 					resolve(new Response('{"id":"1233"}', {
 						status: 201,
 						headers: {
@@ -24,7 +24,7 @@ const testClient: HttpClientInterface = {
 				});
 
 			case '?limit(10,0)': {
-				return new Promise((resolve, reject) => {
+				return new Promise(resolve => {
 					const responseData = [
 						{id: '1233', data: {a: 1, b: 2}},
 						{id: '1672', data: {a: 2, b: 3}}
@@ -38,7 +38,7 @@ const testClient: HttpClientInterface = {
 				});
 			}
 			case '?limit(1)': {
-				return new Promise((resolve, reject) => {
+				return new Promise(resolve => {
 					const responseData = [
 						{id: '1233', data: {a: 1, b: 2}}
 					];
@@ -53,8 +53,8 @@ const testClient: HttpClientInterface = {
 			}
 		}
 	},
-	post(uri?: string, body?: {}, options: {} = {}): Promise<Response> {
-		return new Promise((resolve, reject) => {
+	post(): Promise<Response> {
+		return new Promise(resolve => {
 			resolve(new Response('{"id":"1233"}', {
 				status: 201,
 				headers: {
@@ -63,8 +63,8 @@ const testClient: HttpClientInterface = {
 			}));
 		});
 	},
-	put(uri?: string, body?: {}, options: {} = {}): Promise<Response> {
-		return new Promise((resolve, reject) => {
+	put(): Promise<Response> {
+		return new Promise(resolve => {
 			resolve(new Response('{"id":"1233","data":{"a":1,"b":2}}', {
 				status: 200,
 				headers: {
@@ -73,8 +73,8 @@ const testClient: HttpClientInterface = {
 			}));
 		});
 	},
-	delete(uri?: string, options: {} = {}): Promise<Response> {
-		return new Promise((resolve, reject) => {
+	delete(): Promise<Response> {
+		return new Promise(resolve => {
 			resolve(new Response('{"id":"1233","data":{"a":1,"b":2}}', {
 				status: 200,
 				headers: {
@@ -83,8 +83,8 @@ const testClient: HttpClientInterface = {
 			}));
 		});
 	},
-	head(uri?: string, options: {} = {}): Promise<Response> {
-		return new Promise((resolve, reject) => {
+	head(): Promise<Response> {
+		return new Promise(resolve => {
 			resolve(new Response('', {
 				status: 200,
 				headers: {
