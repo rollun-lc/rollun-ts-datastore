@@ -21,11 +21,12 @@ export interface DataStoreInterface<T = {}> extends ReadInterface<T> {
 }
 
 export interface HttpRequestOptions {
+	timeout?: number;
 	headers?: { [headerName: string]: string };
 }
 
 export interface HttpClientInterface<T = {}> {
-	get(uri?: string, options?: {}): Promise<Response>;
+	get(uri?: string, options?: HttpRequestOptions): Promise<Response>;
 
 	post(uri?: string, body?: string | T, options?: HttpRequestOptions): Promise<Response>;
 
