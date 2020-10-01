@@ -1,28 +1,27 @@
-import Query                     from 'rollun-ts-rql/dist/Query';
-import Limit                     from 'rollun-ts-rql/dist/nodes/Limit';
-import Select                    from 'rollun-ts-rql/dist/nodes/Select';
-import Sort                      from 'rollun-ts-rql/dist/nodes/Sort';
-import GroupBy                   from 'rollun-ts-rql/dist/nodes/GroupBy';
-import AbstractQueryNode         from 'rollun-ts-rql/dist/nodes/AbstractQueryNode';
-import AbstractLogicalNode       from 'rollun-ts-rql/dist/nodes/logicalNodes/AbstractLogicalNode';
-import AggregateFunctionNode     from 'rollun-ts-rql/dist/nodes/aggregateNodes/AggregateFunctionNode';
-import { LocalDataStoreOptions } from '../LocalDatastore';
-import _                         from 'lodash/fp';
-import {
-	queryNodeHandlerFactory,
-	logicalNodesHandlersFactory
-}                                from './QueryNodeHandlerFactory';
+import Query                                                    from 'rollun-ts-rql/dist/Query';
+import Limit                                                    from 'rollun-ts-rql/dist/nodes/Limit';
+import Select                                                   from 'rollun-ts-rql/dist/nodes/Select';
+import Sort                                                     from 'rollun-ts-rql/dist/nodes/Sort';
+import GroupBy                                                  from 'rollun-ts-rql/dist/nodes/GroupBy';
+import AbstractQueryNode                                        from 'rollun-ts-rql/dist/nodes/AbstractQueryNode';
+import AbstractLogicalNode
+																																from 'rollun-ts-rql/dist/nodes/logicalNodes/AbstractLogicalNode';
+import AggregateFunctionNode
+																																from 'rollun-ts-rql/dist/nodes/aggregateNodes/AggregateFunctionNode';
+import { LocalDataStoreOptions }                                from '../LocalDatastore';
+import _                                                        from 'lodash/fp';
+import { logicalNodesHandlersFactory, queryNodeHandlerFactory } from './QueryNodeHandlerFactory';
 
 /**
  * T extends {[key: string]: any}, this string exists to silence ts error 'type {} has no index signature'
  */
 
-export default class LocalDataClient<T extends {[key: string]: any}> {
+export default class LocalDataClient<T extends { [key: string]: any }> {
 	readonly identifier: string;
 	private data: Array<T>;
 
 	constructor(options?: LocalDataStoreOptions<T>) {
-		this.data = (options && options.initialData) || [];
+		this.data       = (options && options.initialData) || [];
 		this.identifier = (options && options.idField) || 'id';
 	}
 
@@ -32,7 +31,7 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 
 	delete(id: string | number) {
 		let removedItem = null;
-		this.data = this.data.filter(el => {
+		this.data       = this.data.filter(el => {
 			if (el[this.identifier] === id) {
 				removedItem = el;
 				return false;
@@ -40,7 +39,7 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 			return true;
 		});
 		if (!removedItem) {
-			throw new Error(`Could not find item with key identifier ${id} to delete`);
+			throw new Error(`Could not find item with key identifier ${ id } to delete`);
 		}
 		return removedItem;
 	}
@@ -62,15 +61,15 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 		)(this.data) as unknown as Array<U>;
 	}
 
-	update<U extends {[key: string]: any}>(item: U): T {
+	update<U extends { [key: string]: any }>(item: U): T {
 		const id = item[this.identifier];
 		if (!id) {
-			throw new TypeError(`Item does not have key identifier [${this.identifier}]`);
+			throw new TypeError(`Item does not have key identifier [${ this.identifier }]`);
 		}
 		let updatedItem = null;
-		this.data = this.data.map((el: T): T => {
+		this.data       = this.data.map((el: T): T => {
 			if (el[this.identifier] === id) {
-				updatedItem = {...el, ...item};
+				updatedItem = { ...el, ...item };
 				return updatedItem;
 			}
 			return el;
@@ -78,7 +77,7 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 		if (updatedItem) {
 			return updatedItem;
 		}
-		throw new Error(`Could not find item with key identifier ${id} to update`);
+		throw new Error(`Could not find item with key identifier ${ id } to update`);
 	}
 
 	create(item: T): T {
@@ -88,7 +87,7 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 		}
 		const existingItem = this.data.find(el => el[this.identifier] === id);
 		if (existingItem) {
-			throw new Error(`Item with key identifier ${id} already exists`);
+			throw new Error(`Item with key identifier ${ id } already exists`);
 		}
 		this.data = this.data.concat(item);
 		return item;
@@ -101,9 +100,9 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 		return (data: Array<T>) => data.sort((a, b) => {
 			const sortOptions = Object.entries(node!.sortOptions);
 			for (const sortOption of sortOptions) {
-				const [key, value] = sortOption;
+				const [ key, value ] = sortOption;
 				if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-					throw new Error(`Field ${key} does not exist in list`);
+					throw new Error(`Field ${ key } does not exist in list`);
 				}
 				if (a[key] > b[key]) {
 					return 1 * value;
@@ -127,7 +126,7 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 			return (data: Array<T>) => data;
 		}
 		return (data: Array<T>) => data.map(el => {
-			let newItem: {[key: string]: any} = {};
+			let newItem: { [key: string]: any } = {};
 			node.fields.forEach(field => {
 				if (field instanceof AggregateFunctionNode) {
 					// TODO aggregation nodes support
@@ -135,7 +134,7 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 					if (el.hasOwnProperty(field)) {
 						newItem[field] = el[field];
 					} else {
-						throw new Error(`Field ${field} does not exist in list`);
+						throw new Error(`Field ${ field } does not exist in list`);
 					}
 				}
 			});
@@ -162,7 +161,7 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 		const checkIfElementExists = (array: Array<T>, el: T) => {
 			for (const field of node.fields) {
 				if (!el.hasOwnProperty(field)) {
-					throw new Error(`Field ${field} does not exist in list`);
+					throw new Error(`Field ${ field } does not exist in list`);
 				}
 				if (!array.find(e => e[field] === el[field])) {
 					return false;
@@ -170,7 +169,7 @@ export default class LocalDataClient<T extends {[key: string]: any}> {
 			}
 			return true;
 		};
-		const reducer = (acc: Array<T>, el: T) => {
+		const reducer              = (acc: Array<T>, el: T) => {
 			return checkIfElementExists(acc, el)
 				? acc
 				: acc.concat(el);

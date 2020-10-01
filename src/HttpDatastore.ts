@@ -7,7 +7,7 @@ export interface HttpDataStoreOptions {
 	client?: HttpClientInterface;
 	idField?: string;
 	timeout?: number;
-	headers?: {[key: string]: string};
+	headers?: { [key: string]: string };
 }
 
 export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
@@ -15,14 +15,14 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 	protected readonly client: HttpClientInterface;
 	protected readonly timeout: number;
 
-	constructor(url?: string, {idField = 'id', client, timeout = 0, headers = {}}: HttpDataStoreOptions = {}) {
+	constructor(url?: string, { idField = 'id', client, timeout = 0, headers = {} }: HttpDataStoreOptions = {}) {
 		this.identifier = idField;
-		this.client = client || new BrowserClient<T>(url, {timeout, headers});
+		this.client     = client || new BrowserClient<T>(url, { timeout, headers });
 	}
 
 	read(id: string): Promise<T> {
 		return new Promise((resolve, reject) => {
-			this.client.get(`/${id}`)
+			this.client.get(`/${ id }`)
 				.then(response => response.json())
 				.then(item => resolve(item))
 				.catch((error) => {
@@ -33,7 +33,7 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 
 	has(id: string): Promise<boolean> {
 		return new Promise((resolve, reject) => {
-			this.client.get(`/${id}`)
+			this.client.get(`/${ id }`)
 				.then(response => response.json())
 				.then(response => response ? resolve(true) : resolve(false))
 				.catch((error) => {
@@ -44,7 +44,7 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 
 	query<U = T>(query = new Query({})): Promise<Array<U>> {
 		return new Promise((resolve, reject) => {
-			this.client.get(`?${QueryStringifier.stringify(query)}`)
+			this.client.get(`?${ QueryStringifier.stringify(query) }`)
 				.then(response => response.json())
 				.then(items => resolve(items))
 				.catch((error) => {
@@ -66,7 +66,7 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 
 	update<S = T>(item: S): Promise<T> {
 		return new Promise((resolve, reject) => {
-			this.client.put(`/${encodeURI(item[this.identifier])}`, item)
+			this.client.put(`/${ encodeURI(item[this.identifier]) }`, item)
 				.then(response => response.json())
 				.then(item => resolve(item))
 				.catch((error) => {
@@ -77,7 +77,7 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 
 	delete(id: string): Promise<T> {
 		return new Promise((resolve, reject) => {
-			this.client.delete(`/${id}`)
+			this.client.delete(`/${ id }`)
 				.then(response => response.json())
 				.then(item => resolve(item))
 				.catch((error) => {
@@ -104,5 +104,20 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 	protected getItemCount(response: Response): number {
 		const responseHeader: string = response.headers.get('Content-Range');
 		return parseInt(responseHeader.split('/')[1], 10);
+	}
+
+	rewrite(item: T): Promise<T> {
+		return new Promise((resolve, reject) => {
+			this.client.post('', item, {
+				headers: {
+					'If-Match': '*'
+				}
+			})
+				.then(response => response.json())
+				.then(item => resolve(item))
+				.catch((error) => {
+					reject(error);
+				});
+		});
 	}
 }
