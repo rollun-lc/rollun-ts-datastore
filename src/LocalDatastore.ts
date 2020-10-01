@@ -84,4 +84,18 @@ export default class LocalDatastore<T = any> implements DataStoreInterface<T> {
 			}
 		});
 	}
+
+	rewrite(item: T): Promise<T> {
+		return new Promise<T>((resolve, reject) => {
+			try {
+				if (this.client.read(item[this.identifier])) {
+					resolve(this.client.update(item));
+				} else {
+					resolve(this.client.create(item));
+				}
+			} catch (e) {
+				reject(e);
+			}
+		});
+	}
 }
