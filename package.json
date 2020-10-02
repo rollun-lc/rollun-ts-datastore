@@ -5,7 +5,7 @@
   "description": "rollun-datastore written in TS",
   "dependencies": {
     "lodash": "^4.17.19",
-    "rollun-ts-rql": "^0.7",
+    "rollun-ts-rql": "^0.8",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
