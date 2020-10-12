@@ -100,6 +100,21 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
     });
   }
 
+  rewrite(item: T): Promise<T> {
+    return new Promise((resolve, reject) => {
+      this.client.post('', item, {
+          headers: {
+            'If-Match': '*'
+          }
+        })
+        .then(response => response.json())
+        .then(item => resolve(item))
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
   protected getItemCount(response: Response): number {
     const responseHeader: string = response.headers.get('Content-Range');
     return parseInt(responseHeader.split('/')[1], 10);
