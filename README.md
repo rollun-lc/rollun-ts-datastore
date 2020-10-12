@@ -15,10 +15,7 @@ to the dependencies section of your package.json
 ## Basic usage
 ```js
 import HttpDatastore from "rollun-ts-datastore/dist/HttpDatastore";
-import Query from "rollun-ts-rql/dist/Query";
-import And from "rollun-ts-rql/dist/nodes/logicalNodes/And";
-import Le from "rollun-ts-rql/dist/nodes/scalarNodes/Le";
-import Ge from "rollun-ts-rql/dist/nodes/scalarNodes/Ge";
+import {Query, And, Le, Ge} from "rollun-ts-rql";
 
 // keep in mind, using HttpDatastore server side (node.js), 
 // You MUST spesify absolute path to your api

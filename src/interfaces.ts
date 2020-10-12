@@ -1,4 +1,4 @@
-import Query from 'rollun-ts-rql/dist/Query';
+import { Query } from 'rollun-ts-rql';
 
 export interface ReadInterface<T = {}> {
 	readonly identifier: string;
