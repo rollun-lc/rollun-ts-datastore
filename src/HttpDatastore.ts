@@ -52,7 +52,7 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 		});
 	}
 
-	create(item: T): Promise<T> {
+	create(item: Partial<T>): Promise<T> {
 		return new Promise((resolve, reject) => {
 			this.client.post('', item)
 				.then(response => response.json())
@@ -63,7 +63,7 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 		});
 	}
 
-	update<S = T>(item: S): Promise<T> {
+	update(item: Partial<T>): Promise<T> {
 		return new Promise((resolve, reject) => {
 			this.client.put(`/${ encodeURI(item[this.identifier]) }`, item)
 				.then(response => response.json())
@@ -100,7 +100,7 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 		});
 	}
 
-	rewrite(item: T): Promise<T> {
+	rewrite(item: Partial<T>): Promise<T> {
 		return new Promise((resolve, reject) => {
 			this.client.post('', item, {
 					headers: {

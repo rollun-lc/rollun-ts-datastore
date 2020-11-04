@@ -13,11 +13,11 @@ export interface ReadInterface<T = {}> {
 }
 
 export interface DataStoreInterface<T = {}> extends ReadInterface<T> {
-	create(item: T): Promise<T>;
+	create(item: Partial<T>): Promise<T>;
 
-	rewrite(item: T): Promise<T>;
+	rewrite(item: Partial<T>): Promise<T>;
 
-	update(item: T): Promise<T>;
+	update(item: Partial<T>): Promise<T>;
 
 	delete(id: string): Promise<T>;
 }
