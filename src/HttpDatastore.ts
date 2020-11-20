@@ -57,7 +57,7 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 
 	update(item: Partial<T>): Promise<T> {
 		return new Promise((resolve, reject) => {
-			this.client.put(`/${ encodeURIComponent(item[this.identifier]) }`, item)
+			this.client.put('', item)
 				.then(response => response.json())
 				.then(resolve)
 				.catch(reject);
