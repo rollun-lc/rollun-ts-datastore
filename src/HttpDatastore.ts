@@ -23,10 +23,8 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 		return new Promise((resolve, reject) => {
 			this.client.get(`/${ id }`)
 				.then(response => response.json())
-				.then(item => resolve(item))
-				.catch((error) => {
-					reject(error);
-				});
+				.then(resolve)
+				.catch(reject);
 		});
 	}
 
@@ -34,10 +32,8 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 		return new Promise((resolve, reject) => {
 			this.client.get(`/${ id }`)
 				.then(response => response.json())
-				.then(response => response ? resolve(true) : resolve(false))
-				.catch((error) => {
-					reject(error);
-				});
+				.then(response => resolve(!!response))
+				.catch(reject);
 		});
 	}
 
@@ -45,10 +41,8 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 		return new Promise((resolve, reject) => {
 			this.client.get(`?${ QueryStringifier.stringify(query) }`)
 				.then(response => response.json())
-				.then(items => resolve(items))
-				.catch((error) => {
-					reject(error);
-				});
+				.then(resolve)
+				.catch(reject);
 		});
 	}
 
@@ -56,32 +50,26 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 		return new Promise((resolve, reject) => {
 			this.client.post('', item)
 				.then(response => response.json())
-				.then(item => resolve(item))
-				.catch((error) => {
-					reject(error);
-				});
+				.then(resolve)
+				.catch(reject);
 		});
 	}
 
 	update(item: Partial<T>): Promise<T> {
 		return new Promise((resolve, reject) => {
-			this.client.put(`/${ encodeURI(item[this.identifier]) }`, item)
+			this.client.put(`/${ encodeURIComponent(item[this.identifier]) }`, item)
 				.then(response => response.json())
-				.then(item => resolve(item))
-				.catch((error) => {
-					reject(error);
-				});
+				.then(resolve)
+				.catch(reject);
 		});
 	}
 
 	delete(id: string): Promise<T> {
 		return new Promise((resolve, reject) => {
-			this.client.delete(`/${ id }`)
+			this.client.delete(`/${ encodeURIComponent(id) }`)
 				.then(response => response.json())
-				.then(item => resolve(item))
-				.catch((error) => {
-					reject(error);
-				});
+				.then(resolve)
+				.catch(reject);
 		});
 	}
 
@@ -90,13 +78,11 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 			this.client.get('?limit(1)', {
 					headers: {
 						'With-Content-Range': '*'
-					},
-					timeout: this.timeout
+					}
 				}
-			).then(response => resolve(this.getItemCount(response)))
-				.catch((error) => {
-					reject(error);
-				});
+				)
+				.then(response => resolve(this.getItemCount(response)))
+				.catch(reject);
 		});
 	}
 
@@ -108,10 +94,8 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 					}
 				})
 				.then(response => response.json())
-				.then(item => resolve(item))
-				.catch((error) => {
-					reject(error);
-				});
+				.then(resolve)
+				.catch(reject);
 		});
 	}
 
