@@ -32,7 +32,9 @@
     "lint:fix": "node_modules/.bin/tslint --project tslint.json -e **/__tests__/** --fix",
     "build": "tsc && babel src  --ignore node_modules --out-dir dist --extensions '.ts'",
     "run-tests": "jest",
-    "test": "npm run build && npm run run-tests"
+    "test": "npm run build && npm run run-tests",
+    "test:coverage": "jest --coverage --coverageReporters=\"json-summary\" --watchAll=false",
+    "update:badge": "node ./updateBadge.js"
   },
   "keywords": [
     "rollun"
