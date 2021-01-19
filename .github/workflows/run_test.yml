@@ -19,4 +19,14 @@ jobs:
       - name: Build
         run: npm install
       - name: test
-        run: npm test
+        run: |
+          npm run build
+          npm run test:coverage
+          npm run update:badge
+
+      - uses: EndBug/add-and-commit@v7
+        with:
+          add: 'README.md'
+          author_name: Update-bot
+          message: 'Update README.md from update-bot'
+          push: true
