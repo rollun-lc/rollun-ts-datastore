@@ -15,7 +15,6 @@ export default class BrowserLifecycleToken {
 		if (!sessionStorage) {
 			return null;
 		}
-
 		let lcToken = sessionStorage.getItem(BrowserLifecycleToken.TokenName) || '';
 		if (!lcToken || BrowserLifecycleToken.isValidLCToken(lcToken)) {
 			lcToken = BrowserLifecycleToken.generateLCToken();
