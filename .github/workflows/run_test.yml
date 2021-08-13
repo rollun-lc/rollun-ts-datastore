@@ -19,9 +19,13 @@ jobs:
       - name: Build
         run: npm install
       - name: test
-        run: npm run test:coverage
-        
-      - uses: rollun-com/actions/update-coverage-badge@master
+        run: |
+          npm run build
+          npm run test:coverage
+          npm run update:badge
+      - uses: EndBug/add-and-commit@v7
         with:
-          readme-path: './README.md'
-          coverage-summary-path: './coverage/coverage-summary.json'
+          add: 'README.md'
+          author_name: Update-bot
+          message: 'Update README.md from update-bot'
+          push: true
