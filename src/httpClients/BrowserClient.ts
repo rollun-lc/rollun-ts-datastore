@@ -1,5 +1,6 @@
 import { HttpRequestOptions } from '../interfaces';
 import AbstractClient         from './AbstractClient';
+import BrowserLifecycleToken  from '../BrowserLifecycleToken';
 
 export default class BrowserClient<T> extends AbstractClient<T> {
 	private readonly timeout: number;
@@ -11,6 +12,7 @@ export default class BrowserClient<T> extends AbstractClient<T> {
 		this.url = url;
 		this.timeout = timeout || 0;
 		this.headers = new Headers({
+			[BrowserLifecycleToken.TokenName]: BrowserLifecycleToken.generateAndSetToken(),
 			'Accept': 'application/json',
 			'Content-Type': 'application/json',
 			...headers
