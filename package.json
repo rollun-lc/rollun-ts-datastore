@@ -10,11 +10,6 @@
     "rollun-ts-utils": "^0.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.0",
-    "@babel/core": "^7.7.2",
-    "@babel/plugin-proposal-class-properties": "^7.7.0",
-    "@babel/preset-env": "^7.7.1",
-    "@babel/preset-typescript": "^7.7.2",
     "@types/jest": "^24.0.23",
     "@types/nock": "^10.0.3",
     "@types/node": "~9.6.5",
@@ -31,7 +26,7 @@
   "scripts": {
     "analyse": "node_modules/.bin/tslint --project tslint.json -e **/__tests__/**",
     "lint:fix": "node_modules/.bin/tslint --project tslint.json -e **/__tests__/** --fix",
-    "build": "tsc && babel src  --ignore node_modules --out-dir dist --extensions '.ts'",
+    "build": "tsc",
     "run-tests": "jest",
     "test": "npm run build && npm run run-tests"
   },
