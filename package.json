@@ -6,7 +6,8 @@
   "dependencies": {
     "lodash": "^4.17.19",
     "node-fetch": "^2.6.1",
-    "rollun-ts-rql": "^0.9"
+    "rollun-ts-rql": "^0.9",
+    "rollun-ts-utils": "^0.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.0",
