@@ -1,24 +1,22 @@
 import { randomString } from 'rollun-ts-utils';
 
+export interface LifecycleTokenStorage {
+	getItem: (name: string) => string | null;
+	setItem: (key: string, value: string) => void;
+}
+
 export default class BrowserLifecycleToken {
-	public static TokenName = 'lifecycle_token';
+	public static Name = 'lifecycle_token';
 
-	private static generateLCToken() {
-		return randomString(30, 'QWERTYUIOPASDFGHJKLZXCVBNM0123456789');
-	}
+	constructor(private storage: LifecycleTokenStorage) {}
 
-	public static isValidLCToken(token: string | null) {
-		return typeof token === 'string' && token.length === 30;
-	}
+	public generateAndSetToken() {
+		let lcToken = this.storage.getItem(BrowserLifecycleToken.Name) || '';
+		const isTokenValid = typeof lcToken === 'string' && lcToken.length === 30;
 
-	public static generateAndSetToken() {
-		if (!sessionStorage) {
-			return null;
-		}
-		let lcToken = sessionStorage.getItem(BrowserLifecycleToken.TokenName) || '';
-		if (!lcToken || BrowserLifecycleToken.isValidLCToken(lcToken)) {
-			lcToken = BrowserLifecycleToken.generateLCToken();
-			sessionStorage.setItem(BrowserLifecycleToken.TokenName, lcToken);
+		if (!lcToken || !isTokenValid) {
+			lcToken = randomString(30, 'QWERTYUIOPASDFGHJKLZXCVBNM0123456789');
+			this.storage.setItem(BrowserLifecycleToken.Name, lcToken);
 		}
 
 		return lcToken;

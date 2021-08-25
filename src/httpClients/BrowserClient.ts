@@ -9,10 +9,11 @@ export default class BrowserClient<T> extends AbstractClient<T> {
 		headers = {}, timeout = 0
 	} = {}) {
 		super();
+		const token = new BrowserLifecycleToken(sessionStorage);
 		this.url = url;
 		this.timeout = timeout || 0;
 		this.headers = new Headers({
-			[BrowserLifecycleToken.TokenName]: BrowserLifecycleToken.generateAndSetToken(),
+			[BrowserLifecycleToken.Name]: token.generateAndSetToken(),
 			'Accept': 'application/json',
 			'Content-Type': 'application/json',
 			...headers
