@@ -8,7 +8,9 @@ export interface LifecycleTokenStorage {
 export default class BrowserLifecycleToken {
 	public static Name = 'lifecycle_token';
 
-	constructor(private storage: LifecycleTokenStorage) {}
+	constructor(private storage: LifecycleTokenStorage) {
+		this.storage = storage;
+	}
 
 	public generateAndSetToken() {
 		let lcToken = this.storage.getItem(BrowserLifecycleToken.Name) || '';
