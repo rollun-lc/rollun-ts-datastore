@@ -4,6 +4,10 @@ import fetch, { Headers, Request } from 'node-fetch';
 (global as any).Headers = Headers;
 (global as any).Request = Request;
 (global as any).fetch = fetch;
+(global as any).sessionStorage = {
+	getItem: (name) => 'test',
+	setItem: (name, value) => { return; }
+};
 
 const nock = require('nock');
 
