@@ -1,5 +1,5 @@
 import HttpDatastore           from '../dist/HttpDatastore';
-import { Query, Limit }        from 'rollun-ts-rql';
+import { Query, Limit, Eq, Gt, Lt } from 'rollun-ts-rql';
 import { Headers, Response }   from 'node-fetch';
 import { HttpClientInterface } from '../dist/interfaces';
 
@@ -40,6 +40,60 @@ const testClient: HttpClientInterface = {
         return new Promise(resolve => {
           const responseData = [
             { id: '1233', data: { a: 1, b: 2 } }
+          ];
+          resolve(new Response(JSON.stringify(responseData), {
+            status:  201,
+            headers: {
+              'Content-Type':  'application/json',
+              'Content-Range': 'items 0-1/3'
+            }
+          }));
+        });
+      }
+      case '?limit(1,1)': {
+        return new Promise(resolve => {
+          const responseData = [];
+          resolve(new Response(JSON.stringify(responseData), {
+            status:  201,
+            headers: {
+              'Content-Type':  'application/json',
+              'Content-Range': 'items 0-1/3'
+            }
+          }));
+        });
+      }
+      case '?eq(id,string:1233)': {
+        return new Promise(resolve => {
+          const responseData = [
+            { id: '1233', data: { a: 1, b: 2 } }
+          ];
+          resolve(new Response(JSON.stringify(responseData), {
+            status:  201,
+            headers: {
+              'Content-Type':  'application/json',
+              'Content-Range': 'items 0-1/3'
+            }
+          }));
+        });
+      }
+      case '?gt(number,1)': {
+        return new Promise(resolve => {
+          const responseData = [
+            { id: '1233', number: 2, data: { a: 1, b: 2 } }
+          ];
+          resolve(new Response(JSON.stringify(responseData), {
+            status:  201,
+            headers: {
+              'Content-Type':  'application/json',
+              'Content-Range': 'items 0-1/3'
+            }
+          }));
+        });
+      }
+      case '?lt(number,2)': {
+        return new Promise(resolve => {
+          const responseData = [
+            { id: '1233', number: 1, data: { a: 1, b: 2 } }
           ];
           resolve(new Response(JSON.stringify(responseData), {
             status:  201,
@@ -171,6 +225,72 @@ test('query', done => {
           expect(_.isEqual(items, [
             { id: '1233', data: { a: 1, b: 2 } },
             { id: '1672', data: { a: 2, b: 3 } }
+          ])).toBeTruthy();
+          done();
+          resolve();
+        }
+      );
+    } catch (error) {
+      reject(error);
+    }
+  });
+});
+test('query limit(1,1)', done => {
+  return new Promise((resolve, reject) => {
+    try {
+      datastore.query(new Query({ limit: new Limit(1, 1) })).then(
+        (items) => {
+          expect(_.isEqual(items, [])).toBeTruthy();
+          done();
+          resolve();
+        }
+      );
+    } catch (error) {
+      reject(error);
+    }
+  });
+});
+test('query ?eq(id,string:1233)', done => {
+  return new Promise((resolve, reject) => {
+    try {
+      datastore.query(new Query({ query: new Eq('id', '1233') })).then(
+        (items) => {
+          expect(_.isEqual(items, [
+            { id: '1233', data: { a: 1, b: 2 } },
+          ])).toBeTruthy();
+          done();
+          resolve();
+        }
+      );
+    } catch (error) {
+      reject(error);
+    }
+  });
+});
+test('query ?gt(number,1)', done => {
+  return new Promise((resolve, reject) => {
+    try {
+      datastore.query(new Query({ query: new Gt('number', 1) })).then(
+        (items) => {
+          expect(_.isEqual(items, [
+            { id: '1233', number: 2, data: { a: 1, b: 2 } },
+          ])).toBeTruthy();
+          done();
+          resolve();
+        }
+      );
+    } catch (error) {
+      reject(error);
+    }
+  });
+});
+test('query ?lt(number,2)', done => {
+  return new Promise((resolve, reject) => {
+    try {
+      datastore.query(new Query({ query: new Lt('number', 2) })).then(
+        (items) => {
+          expect(_.isEqual(items, [
+            { id: '1233', number: 1, data: { a: 1, b: 2 } },
           ])).toBeTruthy();
           done();
           resolve();
