@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const {Headers, Request} = require('node-fetch');
-import { HttpRequestOptions } from '../interfaces';
+import { HttpRequestOptions } from '../datastores/interfaces';
 import AbstractClient from './AbstractClient';
 
 export default class NodeClient extends AbstractClient {

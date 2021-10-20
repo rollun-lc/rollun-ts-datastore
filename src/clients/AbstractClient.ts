@@ -1,4 +1,4 @@
-import { HttpClientInterface } from '../interfaces';
+import { HttpClientInterface } from '../datastores/interfaces';
 
 export default abstract class AbstractClient<T = {}> implements HttpClientInterface<T> {
 	protected url: string;

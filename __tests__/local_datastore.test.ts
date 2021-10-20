@@ -1,4 +1,4 @@
-import LocalDatastore from '../src/LocalDatastore';
+import LocalDatastore from '../src/datastores/LocalDatastore';
 
 import {
 	Query,

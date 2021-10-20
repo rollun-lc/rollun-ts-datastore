@@ -1,7 +1,7 @@
-import HttpDatastore           from '../dist/HttpDatastore';
+import HttpDatastore           from '../src/datastores/HttpDatastore';
 import { Query, Limit, Eq, Gt, Lt } from 'rollun-ts-rql';
 import { Headers, Response }   from 'node-fetch';
-import { HttpClientInterface } from '../dist/interfaces';
+import { HttpClientInterface } from '../src/datastores/interfaces';
 
 const _ = require('lodash');
 

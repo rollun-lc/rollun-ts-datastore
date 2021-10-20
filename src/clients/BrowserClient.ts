@@ -1,6 +1,6 @@
-import { HttpRequestOptions } from '../interfaces';
+import { HttpRequestOptions } from '../datastores/interfaces';
 import AbstractClient         from './AbstractClient';
-import BrowserLifecycleToken  from '../BrowserLifecycleToken';
+import BrowserLifecycleToken  from '../utils/BrowserLifecycleToken';
 
 export default class BrowserClient<T> extends AbstractClient<T> {
 	private readonly timeout: number;

@@ -8,12 +8,12 @@ import {
 	AggregateFunctionNode,
 	AbstractLogicalNode
 }                                from 'rollun-ts-rql';
-import { LocalDataStoreOptions } from '../LocalDatastore';
+import { LocalDataStoreOptions } from '../datastores/LocalDatastore';
 import _                         from 'lodash/fp';
 import {
 	queryNodeHandlerFactory,
 	logicalNodesHandlersFactory
-}                                from './QueryNodeHandlerFactory';
+}                                from '../utils/QueryNodeHandlerFactory';
 
 /**
  * T extends {[key: string]: any}, this string exists to silence ts error 'type {} has no index signature'
