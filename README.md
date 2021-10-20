@@ -1,7 +1,7 @@
-![Coverage badge](https://img.shields.io/badge/Coverage%20Statements-76.26%25-orange.svg)
-![Coverage badge](https://img.shields.io/badge/Coverage%20Lines-85.01%25-green.svg)
-![Coverage badge](https://img.shields.io/badge/Coverage%20Functions-77.84%25-orange.svg)
-![Coverage badge](https://img.shields.io/badge/Coverage%20Branches-52.75%25-red.svg)
+![Coverage badge](https://img.shields.io/badge/Coverage%20Statements-83.56%25-green.svg)
+![Coverage badge](https://img.shields.io/badge/Coverage%20Lines-83.64%25-green.svg)
+![Coverage badge](https://img.shields.io/badge/Coverage%20Functions-79.83%25-orange.svg)
+![Coverage badge](https://img.shields.io/badge/Coverage%20Branches-69.92%25-red.svg)
 
 
 # rollun-ts-datastore
