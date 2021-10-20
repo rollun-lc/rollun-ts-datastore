@@ -1,4 +1,4 @@
-import BrowserClient               from '../dist/httpClients/BrowserClient';
+import BrowserClient               from '../src/clients/BrowserClient';
 import fetch, { Headers, Request } from 'node-fetch';
 
 (global as any).Headers = Headers;

@@ -1,5 +1,5 @@
 import { DataStoreInterface, HttpClientInterface } from './interfaces';
-import BrowserClient                               from './httpClients/BrowserClient';
+import BrowserClient                               from '../clients/BrowserClient';
 import { QueryStringifier, Query }                 from 'rollun-ts-rql';
 
 export interface HttpDataStoreOptions {

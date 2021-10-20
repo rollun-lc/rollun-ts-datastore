@@ -1,6 +1,6 @@
 import { DataStoreInterface } from './interfaces';
 import { Query }              from 'rollun-ts-rql';
-import LocalDataClient        from './LocalClient/LocalDataClient';
+import LocalDataClient        from '../clients/LocalDataClient';
 
 export interface LocalDataStoreOptions<T> {
 	idField?: string;
