@@ -23,7 +23,7 @@ export default class NodeClient extends AbstractClient {
 		return fetch(new Request(fullRequestUrl, {
 			method: 'GET',
 			headers: this.generateFullHeaders(options.headers)
-		})).then(this.catchHTTPResponseError);
+		})).then(res => res.json()).then(this.catchHTTPResponseError);
 	}
 
 	post(uri?: {}, body?: {}, options: HttpRequestOptions = {}): Promise<Response> {
