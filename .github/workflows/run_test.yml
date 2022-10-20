@@ -22,10 +22,9 @@ jobs:
         run: |
           npm run build
           npm run test:coverage
-          npm run update:badge
-      - uses: EndBug/add-and-commit@v7
+          
+      - uses: rollun-com/actions/update-coverage-cadge@master
         with:
-          add: 'README.md'
-          author_name: Update-bot
-          message: 'Update README.md from update-bot'
-          push: true
+          readme-path: './README.md'
+          coverage-summary-path: 'coverage/coverage-summary.json'
+          disable-commit: false
