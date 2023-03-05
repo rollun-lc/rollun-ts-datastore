@@ -9,7 +9,7 @@ export default class BrowserClient<T> extends AbstractClient<T> {
 		headers = {}, timeout = 0
 	} = {}) {
 		super();
-		const token = new BrowserLifecycleToken(sessionStorage);
+		const token = new BrowserLifecycleToken(sessionStorage, { tokenName: 'LifeCycleToken' });
 		this.url = url;
 		this.timeout = timeout || 0;
 		this.headers = new Headers({
