@@ -12,11 +12,11 @@ export interface Options {
 }
 
 export default class BrowserLifecycleToken {
-	public readonly name;
-	charset: string;
-	tokenLength: number;
+	private name: string;  
+	private charset: string;
+	private tokenLength: number;
 
-	constructor(private storage: LifecycleTokenStorage, private options: Options = {}) {
+	constructor(private storage: LifecycleTokenStorage, options: Options = {}) {
 		this.storage = storage;
 		this.name = options?.tokenName || 'lifecycle_token';
 		this.charset = options?.charset || 'QWERTYUIOPASDFGHJKLZXCVBNM0123456789';
@@ -33,5 +33,9 @@ export default class BrowserLifecycleToken {
 		}
 
 		return lcToken;
+	}
+
+	get Name() {
+		return this.name;
 	}
 }
