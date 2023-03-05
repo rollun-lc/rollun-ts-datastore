@@ -5,16 +5,18 @@ export interface LifecycleTokenStorage {
 	setItem: (key: string, value: string) => void;
 }
 
-export interface Options = {
-	tokenName: string;
-	charset: string[];
-	tokenLength: number;
+export interface Options {
+	tokenName?: string;
+	charset?: string;
+	tokenLength?: number;
 }
 
 export default class BrowserLifecycleToken {
 	public readonly name;
+	charset: string;
+	tokenLength: number;
 
-	constructor(private storage: LifecycleTokenStorage, private options?: Options = {}) {
+	constructor(private storage: LifecycleTokenStorage, private options: Options = {}) {
 		this.storage = storage;
 		this.name = options?.tokenName || 'lifecycle_token';
 		this.charset = options?.charset || 'QWERTYUIOPASDFGHJKLZXCVBNM0123456789';
@@ -26,7 +28,7 @@ export default class BrowserLifecycleToken {
 		const isTokenValid = typeof lcToken === 'string' && lcToken.length === this.tokenLength;
 
 		if (!lcToken || !isTokenValid) {
-			lcToken = randomString(this.charset, this.charset);
+			lcToken = randomString(this.tokenLength, this.charset);
 			this.storage.setItem(this.name, lcToken);
 		}
 
