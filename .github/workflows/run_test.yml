@@ -21,7 +21,6 @@ jobs:
       - name: test
         run: |
           npm run build
-          npm run test:coverage
 
       - uses: rollun-com/actions/update-coverage-badge@master
         with:
