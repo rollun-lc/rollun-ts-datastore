@@ -22,8 +22,8 @@ jobs:
         run: |
           npm run build
           npm run test:coverage
-          
-      - uses: rollun-com/actions/update-coverage-cadge@master
+
+      - uses: rollun-com/actions/update-coverage-badge@master
         with:
           readme-path: './README.md'
           coverage-summary-path: 'coverage/coverage-summary.json'
