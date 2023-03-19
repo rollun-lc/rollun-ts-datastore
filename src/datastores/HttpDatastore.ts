@@ -20,7 +20,6 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 	) {
 		this.identifier = idField;
 		this.client = Axios.create({
-			baseURL: url,
 			timeout,
 			headers: {
 				Accept: 'application/json',
