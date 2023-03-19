@@ -15,7 +15,7 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 	protected readonly timeout: number;
 
 	constructor(
-		url?: string,
+		private url?: string,
 		{ idField = 'id', timeout = 0, headers = {} }: HttpDataStoreOptions = {}
 	) {
 		this.identifier = idField;
@@ -31,36 +31,33 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 	}
 
 	read(id: string): Promise<T> {
-		return this.client.get(`/${id}`).then((response) => response.data);
+		return this.client.get(`${this.url}/${ id }`).then(res => res.data);
 	}
 
-	has(id: string): Promise<boolean> {
-		return this.client.get(`/${id}`).then((response) => !!response.data);
+	async has(id: string): Promise<boolean> {
+		const { data } = await this.client.get(`${this.url}/${ id }`);
+		return !!data;
 	}
 
 	query<U = T>(query = new Query({})): Promise<Array<U>> {
-		return this.client
-			.get(`?${QueryStringifier.stringify(query)}`)
-			.then((response) => response.data);
+		return this.client.get(`${this.url}?${ QueryStringifier.stringify(query) }`).then(res => res.data)
 	}
 
-	create(item: Partial<T>): Promise<T> {
-		return this.client.post('', item).then((response) => response.data);
+	async create(item: Partial<T>): Promise<T> {
+		return this.client.post(this.url, item).then(res => res.data);
 	}
 
 	update(item: Partial<T>): Promise<T> {
-		return this.client.put('', item).then((response) => response.data);
+		return this.client.put(this.url, item).then(res => res.data);
 	}
 
 	delete(id: string): Promise<T> {
-		return this.client
-			.delete(`/${encodeURIComponent(id)}`)
-			.then((response) => response.data);
+		return this.client.delete(`${this.url}/${ encodeURIComponent(id) }`).then(res => res.data);
 	}
 
 	count(): Promise<number> {
 		return this.client
-			.get('?limit(1)', {
+			.get(`${this.url}?limit(1)`, {
 				headers: {
 					'With-Content-Range': '*',
 				},
@@ -70,7 +67,7 @@ export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 
 	rewrite(item: Partial<T>): Promise<T> {
 		return this.client
-			.post('', item, {
+			.post(this.url, item, {
 				headers: {
 					'If-Match': '*',
 				},
