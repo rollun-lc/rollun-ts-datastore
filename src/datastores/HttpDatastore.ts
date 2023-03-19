@@ -12,12 +12,14 @@ export interface HttpDataStoreOptions {
 export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
   readonly identifier;
   protected readonly timeout: number;
+  private url = '';
 
   constructor(
-    private url: string,
+    url: string,
     { idField = 'id', timeout = 0, headers = {} }: HttpDataStoreOptions = {}
   ) {
     this.identifier = idField;
+    this.url = url;
   }
 
   read(id: string): Promise<T> {

@@ -1,7 +1,7 @@
 {
   "name": "rollun-ts-datastore",
   "main": "dist/index.js",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "rollun-datastore written in TS",
   "dependencies": {
     "axios": "^0.19.2",
