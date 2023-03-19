@@ -25,7 +25,7 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
       - run: git fetch origin
-      - run: npm --no-git-tag-version version $(git describe --tags --abbrev=0)
+#      - run: npm --no-git-tag-version version $(git describe --tags --abbrev=0)
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
