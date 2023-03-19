@@ -1,81 +1,76 @@
 import { DataStoreInterface, HttpClientInterface } from './interfaces';
 import { QueryStringifier, Query } from 'rollun-ts-rql';
-import { default as Axios, AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 export interface HttpDataStoreOptions {
-	client?: HttpClientInterface;
-	idField?: string;
-	timeout?: number;
-	headers?: { [key: string]: string };
+  client?: HttpClientInterface;
+  idField?: string;
+  timeout?: number;
+  headers?: { [key: string]: string };
 }
 
 export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
-	readonly identifier;
-	protected readonly client: AxiosInstance;
-	protected readonly timeout: number;
+  readonly identifier;
+  protected readonly timeout: number;
 
-	constructor(
-		private url?: string,
-		{ idField = 'id', timeout = 0, headers = {} }: HttpDataStoreOptions = {}
-	) {
-		this.identifier = idField;
-		this.client = Axios.create({
-			timeout,
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-				...headers,
-			},
-		});
-	}
+  constructor(
+    private url: string,
+    { idField = 'id', timeout = 0, headers = {} }: HttpDataStoreOptions = {}
+  ) {
+    this.identifier = idField;
+  }
 
-	read(id: string): Promise<T> {
-		return this.client.get(`${this.url}/${ id }`).then(res => res.data);
-	}
+  read(id: string): Promise<T> {
+    return axios.get(`${this.url}/${id}`).then((res) => res.data);
+  }
 
-	async has(id: string): Promise<boolean> {
-		const { data } = await this.client.get(`${this.url}/${ id }`);
-		return !!data;
-	}
+  async has(id: string): Promise<boolean> {
+    const { data } = await axios.get(`${this.url}/${id}`);
+    return !!data;
+  }
 
-	query<U = T>(query = new Query({})): Promise<Array<U>> {
-		return this.client.get(`${this.url}?${ QueryStringifier.stringify(query) }`).then(res => res.data)
-	}
+  query<U = T>(query = new Query({})): Promise<Array<U>> {
+    return axios
+      .get(`${this.url}?${QueryStringifier.stringify(query)}`)
+      .then((res) => res.data);
+  }
 
-	async create(item: Partial<T>): Promise<T> {
-		return this.client.post(this.url, item).then(res => res.data);
-	}
+  async create(item: Partial<T>): Promise<T> {
+    return axios.post(this.url, item).then((res) => res.data);
+  }
 
-	update(item: Partial<T>): Promise<T> {
-		return this.client.put(this.url, item).then(res => res.data);
-	}
+  update(item: Partial<T>): Promise<T> {
+    return axios.put(this.url, item).then((res) => res.data);
+  }
 
-	delete(id: string): Promise<T> {
-		return this.client.delete(`${this.url}/${ encodeURIComponent(id) }`).then(res => res.data);
-	}
+  delete(id: string): Promise<T> {
+    return axios
+      .delete(`${this.url}/${encodeURIComponent(id)}`)
+      .then((res) => res.data);
+  }
 
-	count(): Promise<number> {
-		return this.client
-			.get(`${this.url}?limit(1)`, {
-				headers: {
-					'With-Content-Range': '*',
-				},
-			})
-			.then((response) => this.getItemCount(response));
-	}
+  count(): Promise<number> {
+    return axios
+      .get(`${this.url}?limit(1)`, {
+        headers: {
+          'With-Content-Range': '*',
+        },
+      })
+      .then((response) => this.getItemCount(response));
+  }
 
-	rewrite(item: Partial<T>): Promise<T> {
-		return this.client
-			.post(this.url, item, {
-				headers: {
-					'If-Match': '*',
-				},
-			})
-			.then((response) => response.data);
-	}
+  rewrite(item: Partial<T>): Promise<T> {
+    return axios
+      .post(this.url, item, {
+        headers: {
+          'If-Match': '*',
+        },
+      })
+      .then((response) => response.data);
+  }
 
-	protected getItemCount(response: AxiosResponse): number {
-		const responseHeader: string = response.headers['Content-Range'];
-		return parseInt(responseHeader.split('/')[1], 10);
-	}
+  protected getItemCount(response: AxiosResponse): number {
+    const responseHeader: string = response.headers['Content-Range'];
+    return parseInt(responseHeader.split('/')[1], 10);
+  }
 }
