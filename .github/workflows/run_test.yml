@@ -21,9 +21,3 @@ jobs:
       - name: test
         run: |
           npm run build
-
-      - uses: rollun-com/actions/update-coverage-badge@master
-        with:
-          readme-path: './README.md'
-          coverage-summary-path: 'coverage/coverage-summary.json'
-          disable-commit: false
