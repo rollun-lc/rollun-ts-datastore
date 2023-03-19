@@ -1,6 +1,6 @@
 import { DataStoreInterface, HttpClientInterface } from './interfaces';
-import BrowserClient                               from '../clients/BrowserClient';
-import { QueryStringifier, Query }                 from 'rollun-ts-rql';
+import { QueryStringifier, Query } from 'rollun-ts-rql';
+import { default as Axios, AxiosInstance, AxiosResponse } from 'axios';
 
 export interface HttpDataStoreOptions {
 	client?: HttpClientInterface;
@@ -11,96 +11,75 @@ export interface HttpDataStoreOptions {
 
 export default class HttpDatastore<T = any> implements DataStoreInterface<T> {
 	readonly identifier;
-	protected readonly client: HttpClientInterface;
+	protected readonly client: AxiosInstance;
 	protected readonly timeout: number;
 
-	constructor(url?: string, { idField = 'id', client, timeout = 0, headers = {} }: HttpDataStoreOptions = {}) {
+	constructor(
+		url?: string,
+		{ idField = 'id', timeout = 0, headers = {} }: HttpDataStoreOptions = {}
+	) {
 		this.identifier = idField;
-		this.client     = client || new BrowserClient<T>(url, { timeout, headers });
+		this.client = Axios.create({
+			baseURL: url,
+			timeout,
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				...headers,
+			},
+		});
 	}
 
 	read(id: string): Promise<T> {
-		return new Promise((resolve, reject) => {
-			this.client.get(`/${ id }`)
-				.then(response => response.json())
-				.then(resolve)
-				.catch(reject);
-		});
+		return this.client.get(`/${id}`).then((response) => response.data);
 	}
 
 	has(id: string): Promise<boolean> {
-		return new Promise((resolve, reject) => {
-			this.client.get(`/${ id }`)
-				.then(response => response.json())
-				.then(response => resolve(!!response))
-				.catch(reject);
-		});
+		return this.client.get(`/${id}`).then((response) => !!response.data);
 	}
 
 	query<U = T>(query = new Query({})): Promise<Array<U>> {
-		return new Promise((resolve, reject) => {
-			this.client.get(`?${ QueryStringifier.stringify(query) }`)
-				.then(response => response.json())
-				.then(resolve)
-				.catch(reject);
-		});
+		return this.client
+			.get(`?${QueryStringifier.stringify(query)}`)
+			.then((response) => response.data);
 	}
 
 	create(item: Partial<T>): Promise<T> {
-		return new Promise((resolve, reject) => {
-			this.client.post('', item)
-				.then(response => response.json())
-				.then(resolve)
-				.catch(reject);
-		});
+		return this.client.post('', item).then((response) => response.data);
 	}
 
 	update(item: Partial<T>): Promise<T> {
-		return new Promise((resolve, reject) => {
-			this.client.put('', item)
-				.then(response => response.json())
-				.then(resolve)
-				.catch(reject);
-		});
+		return this.client.put('', item).then((response) => response.data);
 	}
 
 	delete(id: string): Promise<T> {
-		return new Promise((resolve, reject) => {
-			this.client.delete(`/${ encodeURIComponent(id) }`)
-				.then(response => response.json())
-				.then(resolve)
-				.catch(reject);
-		});
+		return this.client
+			.delete(`/${encodeURIComponent(id)}`)
+			.then((response) => response.data);
 	}
 
 	count(): Promise<number> {
-		return new Promise((resolve, reject) => {
-			this.client.get('?limit(1)', {
-					headers: {
-						'With-Content-Range': '*'
-					}
-				}
-				)
-				.then(response => resolve(this.getItemCount(response)))
-				.catch(reject);
-		});
+		return this.client
+			.get('?limit(1)', {
+				headers: {
+					'With-Content-Range': '*',
+				},
+			})
+			.then((response) => this.getItemCount(response));
 	}
 
 	rewrite(item: Partial<T>): Promise<T> {
-		return new Promise((resolve, reject) => {
-			this.client.post('', item, {
-					headers: {
-						'If-Match': '*'
-					}
-				})
-				.then(response => response.json())
-				.then(resolve)
-				.catch(reject);
-		});
+		return this.client
+			.post('', item, {
+				headers: {
+					'If-Match': '*',
+				},
+			})
+			.then((response) => response.data);
 	}
 
-	protected getItemCount(response: Response): number {
-		const responseHeader: string = response.headers.get('Content-Range');
+	protected getItemCount(response: AxiosResponse): number {
+		const responseHeader: string = response.headers['Content-Range'];
 		return parseInt(responseHeader.split('/')[1], 10);
 	}
 }
