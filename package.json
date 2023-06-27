@@ -1,13 +1,13 @@
 {
   "name": "rollun-ts-datastore",
   "main": "dist/index.js",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "rollun-datastore written in TS",
   "dependencies": {
     "axios": "^0.19.2",
     "lodash": "^4.17.19",
     "node-fetch": "^2.6.1",
-    "rollun-ts-rql": "^0.9",
+    "rollun-ts-rql": "^0.10",
     "rollun-ts-utils": "^0.0.2"
   },
   "devDependencies": {
