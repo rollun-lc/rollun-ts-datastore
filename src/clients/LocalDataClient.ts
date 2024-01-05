@@ -55,13 +55,20 @@ export default class LocalDataClient<T extends { [key: string]: any }> {
 		if (!query) {
 			return this.data as unknown as Array<U>;
 		}
-		return _.compose(
-			this._getLimitHandler(query.limitNode),
-			this._getSortHandler(query.sortNode),
-			this._getSelectAndGroupByHandler(query.selectNode),
-			this._getGroupByHandler(query.groupNode),
-			this._getQueryHandler(query.queryNode)
+
+		console.log('query local', query)
+
+		const res = _.compose(
+			this._getLimitHandler(query?.limitNode),
+			this._getSortHandler(query?.sortNode),
+			this._getSelectAndGroupByHandler(query?.selectNode),
+			this._getGroupByHandler(query?.groupNode),
+			this._getQueryHandler(query?.queryNode)
 		)(this.data) as unknown as Array<U>;
+
+		console.log('res local', res);
+
+		return res;
 	}
 
 	update<U extends { [key: string]: any }>(item: U): T {
